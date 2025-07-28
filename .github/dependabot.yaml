@@ -9,6 +9,9 @@ updates:
     labels:
       - "dependencies"
       - "docker"
+    ignore:
+      - dependency-name: "python"
+        versions: ["3.13", "3.13.*"]
 
   # Python dependencies (backend folder)
   - package-ecosystem: "pip"
