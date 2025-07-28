@@ -55,7 +55,8 @@ export default function Apps() {
         setDemoMode(demo)
       }
     })()
-  }, [getConfig])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const filteredApps = apps
     .sort((a, b) =>
