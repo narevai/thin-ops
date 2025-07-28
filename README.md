@@ -1,16 +1,16 @@
-# NarevAI Billing Analyzer
+![Narev Banner](./.github/assets/banner.png)
+# Narev
 
 **Master the AI and cloud cost-speed-quality tradeoff with unified analytics.**
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/narevai/narev)](https://github.com/narevai/narev/commits)
-[![GitHub repo size](https://img.shields.io/github/repo-size/narevai/narev)](https://github.com/narevai/narev)
-[![Image size](https://ghcr-badge.egpl.dev/narevai/narev/size)](https://github.com/narevai/narev/pkgs/container/narev)
-[![Latest version](https://ghcr-badge.egpl.dev/narevai/narev/latest_tag?trim=major&label=latest)](https://github.com/narevai/narev/pkgs/container/narev)
+[![Latest tag](https://img.shields.io/github/v/tag/narevai/narev?label=latest)](https://github.com/narevai/narev/tags)
+[![Code Size](https://img.shields.io/github/languages/code-size/narevai/narev)](https://github.com/narevai/narev)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
-NarevAI is an open source, self-hosted FinOps platform for analyzing and optimizing your AI and cloud spend. It unifies cost and usage data from AWS, Azure, GCP, and OpenAI, providing real-time dashboards, FOCUS-compliant analytics, and actionable recommendations—all while keeping your data private and under your control.
+Narev is an open source, self-hosted FinOps platform for analyzing and optimizing your AI and cloud spend. It unifies cost and usage data from AWS, Azure, GCP, and OpenAI, providing real-time dashboards, FOCUS-compliant analytics, and actionable recommendations—all while keeping your data private and under your control.
 
----
+![Narev Dashboard](./.github/assets/screenshot.png)
 
 ## Features
 
@@ -21,27 +21,32 @@ NarevAI is an open source, self-hosted FinOps platform for analyzing and optimiz
 
 ## Quick Start
 
-**Demo Mode (with sample data):**
+### Demo Mode (with sample data)
 ```bash
 docker run -d \
-  --name narev-billing-demo \
+  --name narev \
   -p 8000:8000 \
   -v $(pwd)/data:/app/data \
   -e DEMO="true" \
   ghcr.io/narevai/narev:latest
-open http://localhost:8000
 ```
 
-**Production:**
+### Production
+First, generate an encryption key:
 ```bash
-docker run -p 8000:8000 ghcr.io/narevai/narev:latest
-open http://localhost:8000
+python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
 ```
-
-- Try [Demo Mode](https://www.narev.ai/docs/) with sample data—no setup required.
-- For production, see the [Deployment Guide](https://www.narev.ai/docs/getting-started/deployment.html).
-
----
+Then run the container with your generated key:
+```bash
+docker run -d \
+  --name narev-prod \
+  -p 8000:8000 \
+  -v $(pwd)/data:/app/data \
+  -e ENCRYPTION_KEY="gAAAAABhZ_your_actual_generated_key_here" \
+  -e ENVIRONMENT="production" \
+  ghcr.io/narevai/narev:latest
+```
+- Full production setup in the [Deployment Guide](https://www.narev.ai/docs/getting-started/deployment.html).
 
 ## License
 
