@@ -14,7 +14,7 @@ def test_get_settings_default():
         settings = get_settings()
 
         assert settings.api_title == "NarevAI Billing Analyzer"
-        assert settings.api_version == "0.1.0"
+        assert settings.api_version == "0.1.1"
         assert settings.environment == "production"
         assert settings.debug is False  # Default is False
         assert settings.database_type == "sqlite"
