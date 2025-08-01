@@ -452,7 +452,7 @@ class ProviderService:
 
     def get_auth_fields(
         self, provider_type: str, auth_method: str | None = None
-    ) -> "ProviderAuthFieldsResponse":
+    ) -> dict:
         """Get authentication field definitions for a provider type."""
         from providers.registry import ProviderRegistry
 
@@ -489,11 +489,9 @@ class ProviderService:
         if auth_method and auth_method in auth_fields:
             auth_fields = {auth_method: auth_fields[auth_method]}
 
-        from app.schemas.auth import ProviderAuthFieldsResponse
-
-        return ProviderAuthFieldsResponse(
-            type=provider_type,
-            supported_auth_methods=supported_methods,
-            default_auth_method=default_method,
-            auth_fields=auth_fields,
-        )
+        return {
+            "provider_type": provider_type,
+            "supported_auth_methods": supported_methods,
+            "default_auth_method": default_method,
+            "auth_fields": auth_fields,
+        }

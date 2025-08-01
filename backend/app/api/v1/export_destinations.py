@@ -9,7 +9,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from app.api.v1.deps import get_export_destination_service
-from app.schemas.auth import DestinationAuthFieldsResponse
+from app.schemas.export_destination import DestinationAuthFieldsResponse
 from app.schemas.export_destination import (
     ConnectionTestResponse,
     ExportDestinationCreate,

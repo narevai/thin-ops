@@ -209,7 +209,7 @@ class ExportDestinationService:
     ) -> "DestinationAuthFieldsResponse":
         """Get authentication field definitions for a destination type."""
         from app.models.auth import AuthMethod
-        from app.schemas.auth import DestinationAuthFieldsResponse
+        from app.schemas.export_destination import DestinationAuthFieldsResponse
 
         metadata = ExportDestinationRegistry.get_destination_metadata(destination_type)
         if not metadata:
@@ -240,7 +240,7 @@ class ExportDestinationService:
     ) -> dict[str, dict[str, Any]]:
         """Generate auth fields configuration for a destination type."""
         from app.models.auth import AuthMethod
-        from app.schemas.auth import AuthFieldConfig
+        from app.schemas.export_destination import AuthFieldConfig
 
         # Default configurations for common destination types
         if destination_type == "bigquery":

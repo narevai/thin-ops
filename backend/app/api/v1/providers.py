@@ -6,7 +6,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
-from app.schemas.auth import ProviderAuthFieldsResponse
+from app.schemas.provider import AuthFieldsResponse
 from app.schemas.provider import (
     HealthCheckResponse,
     MessageResponse,
@@ -266,7 +266,7 @@ def get_auth_fields(
         None, description="Specific auth method to get fields for"
     ),
     provider_service: ProviderService = Depends(get_provider_service),
-) -> ProviderAuthFieldsResponse:
+) -> AuthFieldsResponse:
     """
     Get authentication field definitions for a provider type.
 
@@ -276,7 +276,8 @@ def get_auth_fields(
     - **auth_method**: Optional specific auth method to get fields for
     """
     try:
-        return provider_service.get_auth_fields(provider_type, auth_method)
+        result = provider_service.get_auth_fields(provider_type, auth_method)
+        return AuthFieldsResponse(**result)
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)

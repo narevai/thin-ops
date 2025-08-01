@@ -9,6 +9,21 @@ from uuid import UUID
 from pydantic import BaseModel, Field
 
 
+class AuthFieldConfig(BaseModel):
+    required: bool
+    type: str
+    placeholder: str | None = None
+    description: str | None = None
+    fields: dict[str, "AuthFieldConfig"] | None = None
+
+
+class DestinationAuthFieldsResponse(BaseModel):
+    type: str  # destination_type
+    supported_auth_methods: list[str]
+    default_auth_method: str
+    auth_fields: dict[str, dict[str, AuthFieldConfig]]
+
+
 class ExportDestinationBase(BaseModel):
     name: str = Field(..., description="Unique name for the export destination")
     destination_type: str = Field(
