@@ -195,6 +195,66 @@ class ExportDestinationService:
         """Get metadata for a destination type."""
         return ExportDestinationRegistry.get_destination_metadata(destination_type)
 
+    def get_auth_fields(
+        self, destination_type: str, auth_method: str | None = None
+    ) -> "DestinationAuthFieldsResponse":
+        """Get authentication field definitions for a destination type."""
+        from app.models.auth import AuthMethod
+        from app.schemas.auth import DestinationAuthFieldsResponse
+
+        metadata = ExportDestinationRegistry.get_destination_metadata(destination_type)
+        if not metadata:
+            raise ValueError(f"Destination type '{destination_type}' not found")
+
+        # Generate auth fields based on destination type
+        auth_fields = self._generate_auth_fields_for_destination(
+            destination_type, metadata
+        )
+
+        # Get supported auth methods from metadata
+        supported_methods = metadata.get("supported_auth_methods", [])
+        default_method = metadata.get("default_auth_method") or (
+            supported_methods[0]
+            if supported_methods
+            else AuthMethod.SERVICE_ACCOUNT.value
+        )
+
+        return DestinationAuthFieldsResponse(
+            type=destination_type,
+            supported_auth_methods=supported_methods,
+            default_auth_method=default_method,
+            auth_fields=auth_fields,
+        )
+
+    def _generate_auth_fields_for_destination(
+        self, destination_type: str, metadata: dict[str, Any]
+    ) -> dict[str, dict[str, Any]]:
+        """Generate auth fields configuration for a destination type."""
+        from app.models.auth import AuthMethod
+        from app.schemas.auth import AuthFieldConfig
+
+        # Default configurations for common destination types
+        if destination_type == "bigquery":
+            return {
+                AuthMethod.SERVICE_ACCOUNT.value: {
+                    "service_account_json": AuthFieldConfig(
+                        required=True,
+                        type="textarea",
+                        placeholder='{"type": "service_account", "project_id": "..."}',
+                        description="Google Cloud Service Account JSON credentials",
+                    ).model_dump()
+                }
+            }
+
+        # Default fallback - generic auth method field
+        return {
+            "default": {
+                "method": AuthFieldConfig(
+                    required=True, type="string", description="Authentication method"
+                ).model_dump()
+            }
+        }
+
     # Export run methods
     def create_export_run(self, run_data: dict[str, Any]) -> ExportRun:
         """Create a new export run."""

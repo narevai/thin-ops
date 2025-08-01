@@ -24,7 +24,10 @@ class ExportDestinationRegistry:
         display_name: str,
         description: str = "",
         supported_features: list[str] | None = None,
+        supported_auth_methods: list[str] | None = None,
+        default_auth_method: str | None = None,
         required_auth_fields: list[str] | None = None,
+        auth_fields: dict[str, Any] | None = None,
         required_config_fields: list[str] | None = None,
         optional_config_fields: list[str] | None = None,
         version: str = "1.0.0",
@@ -40,7 +43,10 @@ class ExportDestinationRegistry:
             display_name: Human-readable name
             description: Destination description
             supported_features: List of supported features
+            supported_auth_methods: List of supported authentication methods
+            default_auth_method: Default authentication method
             required_auth_fields: Required authentication fields
+            auth_fields: Authentication field definitions for UI
             required_config_fields: Required configuration fields
             optional_config_fields: Optional configuration fields
             version: Destination version
@@ -64,7 +70,10 @@ class ExportDestinationRegistry:
                     "display_name": display_name,
                     "description": description,
                     "supported_features": supported_features or [],
+                    "supported_auth_methods": supported_auth_methods or [],
+                    "default_auth_method": default_auth_method,
                     "required_auth_fields": required_auth_fields or [],
+                    "auth_fields": auth_fields or {},
                     "required_config_fields": required_config_fields or [],
                     "optional_config_fields": optional_config_fields or [],
                     "version": version,

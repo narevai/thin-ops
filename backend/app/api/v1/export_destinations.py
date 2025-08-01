@@ -6,13 +6,15 @@ import logging
 from typing import Any
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from app.api.v1.deps import get_export_destination_service
+from app.schemas.auth import DestinationAuthFieldsResponse
 from app.schemas.export_destination import (
     ConnectionTestResponse,
     ExportDestinationCreate,
     ExportDestinationResponse,
+    ExportDestinationTypesResponse,
     ExportDestinationUpdate,
     ExportRequest,
     ExportRunResponse,
@@ -22,7 +24,7 @@ from export_pipeline.orchestrator import ExportOrchestrator
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter()
+router = APIRouter(prefix="/export-destinations", tags=["export-destinations"])
 
 
 @router.post("/", response_model=ExportDestinationResponse)
@@ -228,7 +230,7 @@ async def list_export_runs(
 @router.get("/types/info")
 def get_destination_types_info(
     service: ExportDestinationService = Depends(get_export_destination_service),
-):
+) -> ExportDestinationTypesResponse:
     """
     Get information about all supported export destination types.
 
@@ -244,7 +246,9 @@ def get_destination_types_info(
             if metadata:
                 types_info.append(metadata)
 
-        return {"destination_types": types_info, "count": len(types_info)}
+        return ExportDestinationTypesResponse(
+            destination_types=types_info, count=len(types_info)
+        )
     except Exception as e:
         logger.error(f"Error retrieving destination types information: {e}")
         raise HTTPException(
@@ -253,22 +257,24 @@ def get_destination_types_info(
         ) from e
 
 
-@router.get("/types/{destination_type}/metadata")
-def get_destination_metadata(
+@router.get("/types/{destination_type}/auth-fields")
+def get_auth_fields(
     destination_type: str,
+    auth_method: str | None = Query(
+        None, description="Specific auth method to get fields for"
+    ),
     service: ExportDestinationService = Depends(get_export_destination_service),
-):
-    """Get detailed metadata for a specific destination type."""
+) -> DestinationAuthFieldsResponse:
+    """
+    Get authentication field definitions for an export destination type.
+
+    Returns the fields required for each supported authentication method.
+
+    - **destination_type**: Type of destination (bigquery, snowflake, etc.)
+    - **auth_method**: Optional specific auth method to get fields for
+    """
     try:
-        metadata = service.get_destination_metadata(destination_type)
-
-        if not metadata:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Destination type '{destination_type}' not found",
-            )
-
-        return metadata
+        return service.get_auth_fields(destination_type, auth_method)
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)

@@ -93,3 +93,10 @@ class ExportRunResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class ExportDestinationTypesResponse(BaseModel):
+    """Response schema for export destination types info."""
+
+    destination_types: list[dict[str, Any]]
+    count: int

@@ -19,7 +19,10 @@ logger = logging.getLogger(__name__)
     display_name="Google BigQuery",
     description="Export data to Google BigQuery data warehouse",
     supported_features=["incremental_loading", "schema_evolution", "partitioning"],
-    required_auth_fields=["method"],
+    # Auth metadata from auth module
+    supported_auth_methods=BigQueryAuth.SUPPORTED_METHODS,
+    default_auth_method=BigQueryAuth.DEFAULT_METHOD,
+    auth_fields=BigQueryAuth.AUTH_FIELDS,
     required_config_fields=["project_id", "dataset_id"],
     optional_config_fields=[
         "table_name",
@@ -29,11 +32,12 @@ logger = logging.getLogger(__name__)
         "location",
     ],
     default_config={
-        "write_disposition": "append",
+        "write_disposition": "merge",
         "location": "US",
         "table_name": "billing_data_export",
         "batch_size": 1000,
     },
+    # Field descriptions
     field_descriptions={
         "project_id": "Google Cloud Project ID",
         "dataset_id": "BigQuery dataset name",

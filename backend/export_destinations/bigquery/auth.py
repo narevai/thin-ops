@@ -6,11 +6,31 @@ import json
 import logging
 from typing import Any
 
+from app.models.auth import AuthMethod
+
 logger = logging.getLogger(__name__)
 
 
 class BigQueryAuth:
     """BigQuery authentication handler."""
+
+    # BigQuery authentication - only what makes sense for web UI
+    SUPPORTED_METHODS = [
+        AuthMethod.SERVICE_ACCOUNT,  # JSON key file - the standard way
+    ]
+    DEFAULT_METHOD = AuthMethod.SERVICE_ACCOUNT
+
+    # Auth field definitions for UI
+    AUTH_FIELDS = {
+        AuthMethod.SERVICE_ACCOUNT: {
+            "credentials": {
+                "required": True,
+                "type": "json_upload",
+                "placeholder": '{\n  "type": "service_account",\n  "project_id": "your-project",\n  "private_key_id": "...",\n  "private_key": "-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----\\n",\n  "client_email": "...@...iam.gserviceaccount.com",\n  "client_id": "...",\n  "auth_uri": "https://accounts.google.com/o/oauth2/auth",\n  "token_uri": "https://oauth2.googleapis.com/token",\n  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",\n  "client_x509_cert_url": "..."\n}',
+                "description": "Service account JSON key (download from GCP Console > IAM & Admin > Service Accounts)",
+            }
+        }
+    }
 
     @staticmethod
     def get_credentials_from_config(auth_config: dict[str, Any]) -> dict[str, Any]:
@@ -23,22 +43,35 @@ class BigQueryAuth:
         Returns:
             Credentials dictionary for DLT BigQuery destination
         """
-        auth_method = auth_config.get("method", "service_account")
+        auth_method = auth_config.get("method", AuthMethod.SERVICE_ACCOUNT)
 
-        if auth_method == "service_account":
+        # Handle both string and enum values for backward compatibility
+        if isinstance(auth_method, str):
+            try:
+                auth_method = AuthMethod(auth_method)
+            except ValueError:
+                # Map legacy values
+                if auth_method == "service_account":
+                    auth_method = AuthMethod.SERVICE_ACCOUNT
+                else:
+                    raise ValueError(
+                        f"Unsupported BigQuery auth method: {auth_method}. Only SERVICE_ACCOUNT is supported."
+                    )
+
+        if auth_method == AuthMethod.SERVICE_ACCOUNT:
             return BigQueryAuth._get_service_account_credentials(auth_config)
-        elif auth_method == "application_default":
-            return BigQueryAuth._get_application_default_credentials()
         else:
-            raise ValueError(f"Unsupported BigQuery auth method: {auth_method}")
+            raise ValueError(
+                f"Unsupported BigQuery auth method: {auth_method}. Only SERVICE_ACCOUNT is supported."
+            )
 
     @staticmethod
     def _get_service_account_credentials(auth_config: dict[str, Any]) -> dict[str, Any]:
         """Get service account credentials."""
-        credentials_json = auth_config.get("service_account_json")
+        credentials_json = auth_config.get("credentials")
         if not credentials_json:
             raise ValueError(
-                "service_account_json is required for service_account auth"
+                "credentials is required for service_account auth"
             )
 
         # Parse JSON if it's a string
@@ -72,13 +105,6 @@ class BigQueryAuth:
         }
 
     @staticmethod
-    def _get_application_default_credentials() -> dict[str, Any]:
-        """Get application default credentials."""
-        return {
-            "credentials": "default",
-        }
-
-    @staticmethod
     def validate_auth_config(auth_config: dict[str, Any]) -> dict[str, Any]:
         """
         Validate BigQuery authentication configuration.
@@ -94,21 +120,40 @@ class BigQueryAuth:
 
         if not auth_method:
             errors.append("Authentication method is required")
-        elif auth_method not in ["service_account", "application_default"]:
-            errors.append(f"Unsupported auth method: {auth_method}")
-        elif auth_method == "service_account":
-            if not auth_config.get("service_account_json"):
+        else:
+            # Handle both string and enum values
+            if isinstance(auth_method, str):
+                try:
+                    auth_method_enum = AuthMethod(auth_method)
+                except ValueError:
+                    # Map legacy values
+                    if auth_method == "service_account":
+                        auth_method_enum = AuthMethod.SERVICE_ACCOUNT
+                    else:
+                        errors.append(
+                            f"Unsupported auth method: {auth_method}. Only SERVICE_ACCOUNT is supported."
+                        )
+                        return {"valid": len(errors) == 0, "errors": errors}
+            else:
+                auth_method_enum = auth_method
+
+            if auth_method_enum != AuthMethod.SERVICE_ACCOUNT:
                 errors.append(
-                    "service_account_json is required for service_account auth"
+                    f"Unsupported auth method: {auth_method_enum}. Only SERVICE_ACCOUNT is supported."
                 )
             else:
-                # Validate JSON structure
-                try:
-                    credentials_json = auth_config["service_account_json"]
-                    if isinstance(credentials_json, str):
-                        json.loads(credentials_json)
-                except json.JSONDecodeError:
-                    errors.append("Invalid service account JSON format")
+                if not auth_config.get("credentials"):
+                    errors.append(
+                        "credentials is required for service_account auth"
+                    )
+                else:
+                    # Validate JSON structure
+                    try:
+                        credentials_json = auth_config["credentials"]
+                        if isinstance(credentials_json, str):
+                            json.loads(credentials_json)
+                    except json.JSONDecodeError:
+                        errors.append("Invalid service account JSON format")
 
         return {
             "valid": len(errors) == 0,

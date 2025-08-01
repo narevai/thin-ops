@@ -174,21 +174,6 @@ class ProviderTypesResponse(BaseModel):
     api_version: str
 
 
-class AuthFieldConfig(BaseModel):
-    required: bool
-    type: str
-    placeholder: str | None = None
-    description: str | None = None
-    fields: dict[str, "AuthFieldConfig"] | None = None
-
-
-class AuthFieldsResponse(BaseModel):
-    provider_type: str
-    supported_auth_methods: list[str]
-    default_auth_method: str
-    auth_fields: dict[str, dict[str, AuthFieldConfig]]
-
-
 class HealthCheckResponse(BaseModel):
     """Health check response for providers API."""
 

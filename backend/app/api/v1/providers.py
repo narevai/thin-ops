@@ -6,8 +6,8 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
+from app.schemas.auth import ProviderAuthFieldsResponse
 from app.schemas.provider import (
-    AuthFieldsResponse,
     HealthCheckResponse,
     MessageResponse,
     ProviderCreate,
@@ -266,7 +266,7 @@ def get_auth_fields(
         None, description="Specific auth method to get fields for"
     ),
     provider_service: ProviderService = Depends(get_provider_service),
-) -> AuthFieldsResponse:
+) -> ProviderAuthFieldsResponse:
     """
     Get authentication field definitions for a provider type.
 
