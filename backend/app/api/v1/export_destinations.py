@@ -191,20 +191,21 @@ async def export_data(
         # Initialize export orchestrator
         orchestrator = ExportOrchestrator()
 
-        # Run export
-        result = await orchestrator.run_export(
+        # Start export without waiting for completion
+        import asyncio
+        asyncio.create_task(orchestrator.run_export(
             destination_id=destination_id,
             export_filters=export_request.filters,
             export_type=export_request.export_type,
-        )
+        ))
 
-        return result
+        return {"message": "Export started successfully", "destination_id": str(destination_id)}
 
     except Exception as e:
-        logger.error(f"Export failed for destination {destination_id}: {e}")
+        logger.error(f"Failed to start export for destination {destination_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Export failed: {str(e)}",
+            detail=f"Failed to start export: {str(e)}",
         ) from e
 
 
