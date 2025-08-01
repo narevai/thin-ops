@@ -110,11 +110,18 @@ class ExportDestination(Base):
             data["destination_config"] = self.destination_config
 
         # Include auth status (non-sensitive)
-        auth_config = self.get_auth_config()
-        if auth_config:
-            data["auth_method"] = auth_config.get("method", "unknown")
+        if self.auth_config:
             data["auth_configured"] = True
+            # Try to get method from encrypted auth_config
+            try:
+                from app.services.encryption_service import EncryptionService
+                encryption_service = EncryptionService()
+                decrypted_auth = encryption_service.decrypt_dict(self.auth_config)
+                data["auth_method"] = decrypted_auth.get("method", "unknown")
+            except Exception:
+                data["auth_method"] = "unknown"
         else:
             data["auth_configured"] = False
+            data["auth_method"] = None
 
         return data

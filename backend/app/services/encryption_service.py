@@ -92,16 +92,18 @@ class EncryptionService:
         Returns:
             Dictionary with encrypted values
         """
+        import json
+        
         encrypted = {}
         for key, value in data.items():
             if isinstance(value, str):
                 encrypted[key] = self.encrypt(value)
             else:
-                # Convert to string and encrypt
-                encrypted[key] = self.encrypt(str(value))
+                # Convert to JSON string and encrypt (preserves structure)
+                encrypted[key] = self.encrypt(json.dumps(value, ensure_ascii=False))
         return encrypted
 
-    def decrypt_dict(self, data: dict[str, str]) -> dict[str, str]:
+    def decrypt_dict(self, data: dict[str, str]) -> dict[str, Any]:
         """
         Decrypt dictionary values.
 
@@ -109,9 +111,19 @@ class EncryptionService:
             data: Dictionary with encrypted values
 
         Returns:
-            Dictionary with decrypted values
+            Dictionary with decrypted values (preserving original types)
         """
+        import json
+        
         decrypted = {}
         for key, value in data.items():
-            decrypted[key] = self.decrypt(value)
+            decrypted_value = self.decrypt(value)
+            
+            # Try to parse as JSON to restore original type
+            try:
+                decrypted[key] = json.loads(decrypted_value)
+            except (json.JSONDecodeError, ValueError):
+                # If not valid JSON, keep as string
+                decrypted[key] = decrypted_value
+                
         return decrypted

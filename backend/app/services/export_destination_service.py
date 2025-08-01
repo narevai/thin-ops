@@ -3,6 +3,7 @@ Export Destination Service
 """
 
 import logging
+from datetime import datetime, UTC
 from typing import Any
 from uuid import UUID
 
@@ -35,6 +36,16 @@ class ExportDestinationService:
         self.db.add(destination)
         self.db.commit()
         self.db.refresh(destination)
+
+        # Test connection automatically
+        try:
+            test_result = self.test_destination_connection(destination.id)
+            if test_result["success"]:
+                destination.is_validated = True
+                destination.last_validation_at = datetime.now(UTC)
+                self.db.commit()
+        except Exception as e:
+            logger.warning(f"Failed to test new destination {destination.id}: {e}")
 
         logger.info(f"Created export destination: {destination.name}")
         return destination
@@ -129,9 +140,7 @@ class ExportDestinationService:
 
             # Update validation status
             destination.is_validated = result["success"]
-            destination.last_validation_at = (
-                self.encryption_service._get_encryption_key()
-            )  # Use current time
+            destination.last_validation_at = datetime.now(UTC)
             if not result["success"]:
                 destination.validation_error = result.get(
                     "message", "Connection test failed"

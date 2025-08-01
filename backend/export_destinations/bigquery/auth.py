@@ -74,14 +74,11 @@ class BigQueryAuth:
                 "credentials is required for service_account auth"
             )
 
-        # Parse JSON if it's a string
-        if isinstance(credentials_json, str):
-            try:
-                credentials_dict = json.loads(credentials_json)
-            except json.JSONDecodeError as e:
-                raise ValueError(f"Invalid service account JSON: {e}") from e
-        else:
+        # Use credentials directly as dict
+        if isinstance(credentials_json, dict):
             credentials_dict = credentials_json
+        else:
+            raise ValueError(f"credentials must be a JSON object, got {type(credentials_json)}")
 
         # Validate required fields
         required_fields = [
@@ -147,13 +144,10 @@ class BigQueryAuth:
                         "credentials is required for service_account auth"
                     )
                 else:
-                    # Validate JSON structure
-                    try:
-                        credentials_json = auth_config["credentials"]
-                        if isinstance(credentials_json, str):
-                            json.loads(credentials_json)
-                    except json.JSONDecodeError:
-                        errors.append("Invalid service account JSON format")
+                    # Validate credentials structure
+                    credentials_json = auth_config["credentials"]
+                    if not isinstance(credentials_json, dict):
+                        errors.append("credentials must be a JSON object")
 
         return {
             "valid": len(errors) == 0,
