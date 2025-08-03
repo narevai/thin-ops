@@ -54,14 +54,14 @@ async def create_export_destination(
         return ExportDestinationResponse.model_validate(destination.to_dict())
     except Exception as e:
         logger.error(f"Failed to create export destination: {e}")
-        
+
         # Check for unique constraint violation
         if "UNIQUE constraint failed" in str(e):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="Export destination with this name already exists",
             ) from e
-        
+
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to create export destination",
@@ -143,14 +143,14 @@ async def update_export_destination(
         return ExportDestinationResponse.model_validate(destination.to_dict())
     except Exception as e:
         logger.error(f"Failed to update export destination: {e}")
-        
-        # Check for unique constraint violation  
+
+        # Check for unique constraint violation
         if "UNIQUE constraint failed" in str(e):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="Export destination with this name already exists",
             ) from e
-            
+
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to update export destination",

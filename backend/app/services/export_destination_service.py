@@ -46,7 +46,7 @@ class ExportDestinationService:
             # Handle nested fields (e.g., "credentials.private_key")
             parts = field_path.split(".")
             current = encrypted_config
-            
+
             # Navigate to parent of target field
             for part in parts[:-1]:
                 if part in current and isinstance(current[part], dict):
@@ -57,7 +57,9 @@ class ExportDestinationService:
                 # Encrypt the target field
                 final_key = parts[-1]
                 if final_key in current and isinstance(current[final_key], str):
-                    current[final_key] = self.encryption_service.encrypt(current[final_key])
+                    current[final_key] = self.encryption_service.encrypt(
+                        current[final_key]
+                    )
 
         return encrypted_config
 
@@ -81,7 +83,7 @@ class ExportDestinationService:
             # Handle nested fields (e.g., "credentials.private_key")
             parts = field_path.split(".")
             current = decrypted_config
-            
+
             # Navigate to parent of target field
             for part in parts[:-1]:
                 if part in current and isinstance(current[part], dict):
@@ -92,7 +94,9 @@ class ExportDestinationService:
                 # Decrypt the target field
                 final_key = parts[-1]
                 if final_key in current and isinstance(current[final_key], str):
-                    current[final_key] = self.encryption_service.decrypt(current[final_key])
+                    current[final_key] = self.encryption_service.decrypt(
+                        current[final_key]
+                    )
 
         return decrypted_config
 
