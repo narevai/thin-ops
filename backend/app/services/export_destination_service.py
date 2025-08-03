@@ -9,6 +9,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session
 
+from app.models.auth import get_sensitive_fields
 from app.models.export_destination import ExportDestination
 from app.models.export_run import ExportRun
 from app.schemas.export_destination import DestinationAuthFieldsResponse
@@ -25,13 +26,82 @@ class ExportDestinationService:
         self.db = db
         self.encryption_service = EncryptionService()
 
+    def _encrypt_auth_config(self, auth_config: dict[str, Any]) -> dict[str, Any]:
+        """
+        Encrypt sensitive fields in auth configuration.
+
+        Args:
+            auth_config: Authentication configuration
+
+        Returns:
+            Auth config with encrypted sensitive fields
+        """
+        if not auth_config:
+            return auth_config
+
+        encrypted_config = auth_config.copy()
+        sensitive_fields = get_sensitive_fields(auth_config)
+
+        for field_path in sensitive_fields:
+            # Handle nested fields (e.g., "credentials.private_key")
+            parts = field_path.split(".")
+            current = encrypted_config
+            
+            # Navigate to parent of target field
+            for part in parts[:-1]:
+                if part in current and isinstance(current[part], dict):
+                    current = current[part]
+                else:
+                    break
+            else:
+                # Encrypt the target field
+                final_key = parts[-1]
+                if final_key in current and isinstance(current[final_key], str):
+                    current[final_key] = self.encryption_service.encrypt(current[final_key])
+
+        return encrypted_config
+
+    def _decrypt_auth_config(self, auth_config: dict[str, Any]) -> dict[str, Any]:
+        """
+        Decrypt sensitive fields in auth configuration.
+
+        Args:
+            auth_config: Authentication configuration with encrypted fields
+
+        Returns:
+            Auth config with decrypted sensitive fields
+        """
+        if not auth_config:
+            return auth_config
+
+        decrypted_config = auth_config.copy()
+        sensitive_fields = get_sensitive_fields(auth_config)
+
+        for field_path in sensitive_fields:
+            # Handle nested fields (e.g., "credentials.private_key")
+            parts = field_path.split(".")
+            current = decrypted_config
+            
+            # Navigate to parent of target field
+            for part in parts[:-1]:
+                if part in current and isinstance(current[part], dict):
+                    current = current[part]
+                else:
+                    break
+            else:
+                # Decrypt the target field
+                final_key = parts[-1]
+                if final_key in current and isinstance(current[final_key], str):
+                    current[final_key] = self.encryption_service.decrypt(current[final_key])
+
+        return decrypted_config
+
     def create_destination(self, destination_data: dict[str, Any]) -> ExportDestination:
         """Create a new export destination."""
         # Encrypt auth config
         auth_config = destination_data.get("auth_config", {})
         if auth_config:
-            encrypted_auth = self.encryption_service.encrypt_dict(auth_config)
-            destination_data["auth_config"] = encrypted_auth
+            destination_data["auth_config"] = self._encrypt_auth_config(auth_config)
 
         destination = ExportDestination(**destination_data)
         self.db.add(destination)
@@ -84,8 +154,7 @@ class ExportDestinationService:
         if "auth_config" in update_data:
             auth_config = update_data["auth_config"]
             if auth_config:
-                encrypted_auth = self.encryption_service.encrypt_dict(auth_config)
-                update_data["auth_config"] = encrypted_auth
+                update_data["auth_config"] = self._encrypt_auth_config(auth_config)
 
         for key, value in update_data.items():
             if hasattr(destination, key):
@@ -179,9 +248,7 @@ class ExportDestinationService:
         # Decrypt auth config
         if destination.auth_config:
             try:
-                decrypted_auth = self.encryption_service.decrypt_dict(
-                    destination.auth_config
-                )
+                decrypted_auth = self._decrypt_auth_config(destination.auth_config)
                 config["auth_config"] = decrypted_auth
             except Exception as e:
                 logger.error(
