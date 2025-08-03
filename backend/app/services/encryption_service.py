@@ -93,7 +93,7 @@ class EncryptionService:
             Dictionary with encrypted values
         """
         import json
-        
+
         encrypted = {}
         for key, value in data.items():
             if isinstance(value, str):
@@ -114,16 +114,16 @@ class EncryptionService:
             Dictionary with decrypted values (preserving original types)
         """
         import json
-        
+
         decrypted = {}
         for key, value in data.items():
             decrypted_value = self.decrypt(value)
-            
+
             # Try to parse as JSON to restore original type
             try:
                 decrypted[key] = json.loads(decrypted_value)
             except (json.JSONDecodeError, ValueError):
                 # If not valid JSON, keep as string
                 decrypted[key] = decrypted_value
-                
+
         return decrypted

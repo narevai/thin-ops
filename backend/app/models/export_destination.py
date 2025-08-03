@@ -115,6 +115,7 @@ class ExportDestination(Base):
             # Try to get method from encrypted auth_config
             try:
                 from app.services.encryption_service import EncryptionService
+
                 encryption_service = EncryptionService()
                 decrypted_auth = encryption_service.decrypt_dict(self.auth_config)
                 data["auth_method"] = decrypted_auth.get("method", "unknown")

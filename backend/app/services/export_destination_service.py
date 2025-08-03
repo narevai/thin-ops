@@ -3,7 +3,7 @@ Export Destination Service
 """
 
 import logging
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID
 
@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 
 from app.models.export_destination import ExportDestination
 from app.models.export_run import ExportRun
+from app.schemas.export_destination import DestinationAuthFieldsResponse
 from app.services.encryption_service import EncryptionService
 from export_destinations.registry import ExportDestinationRegistry
 
@@ -206,10 +207,9 @@ class ExportDestinationService:
 
     def get_auth_fields(
         self, destination_type: str, auth_method: str | None = None
-    ) -> "DestinationAuthFieldsResponse":
+    ) -> DestinationAuthFieldsResponse:
         """Get authentication field definitions for a destination type."""
         from app.models.auth import AuthMethod
-        from app.schemas.export_destination import DestinationAuthFieldsResponse
 
         metadata = ExportDestinationRegistry.get_destination_metadata(destination_type)
         if not metadata:

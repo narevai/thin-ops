@@ -2,7 +2,6 @@
 BigQuery Authentication
 """
 
-import json
 import logging
 from typing import Any
 
@@ -56,7 +55,7 @@ class BigQueryAuth:
                 else:
                     raise ValueError(
                         f"Unsupported BigQuery auth method: {auth_method}. Only SERVICE_ACCOUNT is supported."
-                    )
+                    ) from None
 
         if auth_method == AuthMethod.SERVICE_ACCOUNT:
             return BigQueryAuth._get_service_account_credentials(auth_config)
@@ -70,15 +69,15 @@ class BigQueryAuth:
         """Get service account credentials."""
         credentials_json = auth_config.get("credentials")
         if not credentials_json:
-            raise ValueError(
-                "credentials is required for service_account auth"
-            )
+            raise ValueError("credentials is required for service_account auth")
 
         # Use credentials directly as dict
         if isinstance(credentials_json, dict):
             credentials_dict = credentials_json
         else:
-            raise ValueError(f"credentials must be a JSON object, got {type(credentials_json)}")
+            raise ValueError(
+                f"credentials must be a JSON object, got {type(credentials_json)}"
+            )
 
         # Validate required fields
         required_fields = [
@@ -140,9 +139,7 @@ class BigQueryAuth:
                 )
             else:
                 if not auth_config.get("credentials"):
-                    errors.append(
-                        "credentials is required for service_account auth"
-                    )
+                    errors.append("credentials is required for service_account auth")
                 else:
                     # Validate credentials structure
                     credentials_json = auth_config["credentials"]

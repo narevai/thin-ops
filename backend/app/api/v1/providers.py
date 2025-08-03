@@ -6,8 +6,8 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
-from app.schemas.provider import AuthFieldsResponse
 from app.schemas.provider import (
+    AuthFieldsResponse,
     HealthCheckResponse,
     MessageResponse,
     ProviderCreate,

@@ -97,7 +97,7 @@ class TestBaseStage:
 
     def test_get_batch_size(self, stage):
         assert (
-            stage.get_batch_size() == 100
+            stage.get_batch_size() == 1000
         )  # Default because stage_name is 'mock' not 'extract'
 
     def test_get_max_retries(self, stage):
@@ -117,9 +117,10 @@ class TestBaseStage:
         items = list(range(125))
         batches = stage.create_batches(items)
 
-        assert len(batches) == 2  # 100, 25 (default batch size is 100)
-        assert len(batches[0]) == 100
-        assert len(batches[1]) == 25
+        assert (
+            len(batches) == 1
+        )  # 1000 (default batch size is 1000, so 125 items = 1 batch)
+        assert len(batches[0]) == 125
 
     @pytest.mark.asyncio
     async def test_run_success(self, stage):

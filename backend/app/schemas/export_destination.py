@@ -6,7 +6,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class AuthFieldConfig(BaseModel):
@@ -60,8 +60,7 @@ class ExportDestinationResponse(ExportDestinationBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ConnectionTestResponse(BaseModel):
@@ -106,8 +105,7 @@ class ExportRunResponse(BaseModel):
     dlt_pipeline_name: str | None = None
     dlt_load_id: str | None = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ExportDestinationTypesResponse(BaseModel):

@@ -9,9 +9,9 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from app.api.v1.deps import get_export_destination_service
-from app.schemas.export_destination import DestinationAuthFieldsResponse
 from app.schemas.export_destination import (
     ConnectionTestResponse,
+    DestinationAuthFieldsResponse,
     ExportDestinationCreate,
     ExportDestinationResponse,
     ExportDestinationTypesResponse,
@@ -193,13 +193,19 @@ async def export_data(
 
         # Start export without waiting for completion
         import asyncio
-        asyncio.create_task(orchestrator.run_export(
-            destination_id=destination_id,
-            export_filters=export_request.filters,
-            export_type=export_request.export_type,
-        ))
 
-        return {"message": "Export started successfully", "destination_id": str(destination_id)}
+        asyncio.create_task(
+            orchestrator.run_export(
+                destination_id=destination_id,
+                export_filters=export_request.filters,
+                export_type=export_request.export_type,
+            )
+        )
+
+        return {
+            "message": "Export started successfully",
+            "destination_id": str(destination_id),
+        }
 
     except Exception as e:
         logger.error(f"Failed to start export for destination {destination_id}: {e}")
