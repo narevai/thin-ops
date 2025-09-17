@@ -93,16 +93,13 @@ class TestEncryptionService:
         # All values should be converted to string and encrypted
         assert all(isinstance(value, str) for value in encrypted_dict.values())
 
-        # Decrypt and verify
-        decrypted_values = {
-            key: encryption_service.decrypt(value)
-            for key, value in encrypted_dict.items()
-        }
+        # Decrypt and verify using decrypt_dict to restore original types
+        decrypted_values = encryption_service.decrypt_dict(encrypted_dict)
 
         assert decrypted_values["string_value"] == "test"
-        assert decrypted_values["int_value"] == "42"
-        assert decrypted_values["float_value"] == "3.14"
-        assert decrypted_values["bool_value"] == "True"
+        assert decrypted_values["int_value"] == 42
+        assert decrypted_values["float_value"] == 3.14
+        assert decrypted_values["bool_value"]
 
     def test_decrypt_dict(self, encryption_service):
         """Test decrypting dictionary values."""

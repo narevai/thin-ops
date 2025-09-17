@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2025-07-28
+
+### Security
+- Fixed `form-data` vulnerability (unsafe random function in boundary generation)
+- Fixed `@eslint/plugin-kit` vulnerability (Regular Expression Denial of Service)
+
+### Fixed
+- Disabled ESLint warnings for functions defined inside React components
+- Removed redundant dependency to prevent refresh loops
+- Configured Dependabot to ignore Python 3.13 updates, keeping project on Python 3.12 (#19) for stability
+
+### Dependencies
+- Updated `vite` from 7.0.2 to 7.0.6
+- Updated `prettier-plugin-tailwindcss` from 0.6.13 to 0.6.14
+- Updated `actions/stale` workflow from v5 to v9 for improved GitHub Actions performance
+
 ## [0.1.0] - 2025-07-25
 
 ### Added

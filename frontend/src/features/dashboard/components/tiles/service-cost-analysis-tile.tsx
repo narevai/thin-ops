@@ -121,6 +121,7 @@ export function ServiceCostAnalysisTile({
       setLoading(false)
     }
     fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filters.dateRange.start_date,
     filters.dateRange.end_date,
@@ -148,6 +149,7 @@ export function ServiceCostAnalysisTile({
       setMetaLoading(false)
     }
     fetchMeta()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

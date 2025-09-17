@@ -63,7 +63,7 @@ class Settings(BaseSettings):
         default="FOCUS 1.2 compliant billing data analyzer for cloud and SaaS providers",
         description="API description",
     )
-    api_version: str = Field(default="0.1.0", description="API version")
+    api_version: str = Field(default="0.1.1", description="API version")
 
     # Demo mode
     demo: bool = Field(

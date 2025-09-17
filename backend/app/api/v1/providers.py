@@ -276,7 +276,8 @@ def get_auth_fields(
     - **auth_method**: Optional specific auth method to get fields for
     """
     try:
-        return provider_service.get_auth_fields(provider_type, auth_method)
+        result = provider_service.get_auth_fields(provider_type, auth_method)
+        return AuthFieldsResponse(**result)
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)

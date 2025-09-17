@@ -121,6 +121,7 @@ export function useSyncs() {
 
   useEffect(() => {
     fetchAllSyncData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const triggerSync = async (data: SyncTriggerRequest) => {
