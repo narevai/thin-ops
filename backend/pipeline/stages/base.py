@@ -169,7 +169,7 @@ class BaseStage(ABC):
 
     def get_batch_size(self) -> int:
         """Get batch size for this stage."""
-        return self.stage_config.get("batch_size", 100)
+        return self.stage_config.get("batch_size", 1000)
 
     def get_max_retries(self) -> int:
         """Get max retries for this stage."""

@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.services.analytics_service import AnalyticsService
 from app.services.billing_service import BillingService
+from app.services.export_destination_service import ExportDestinationService
 from app.services.provider_service import ProviderService
 from app.services.sync_service import SyncService
 
@@ -30,3 +31,10 @@ def get_billing_service(db: Session = Depends(get_db)) -> BillingService:
 def get_analytics_service(db: Session = Depends(get_db)) -> AnalyticsService:
     """Dependency to inject analytics service."""
     return AnalyticsService(db)
+
+
+def get_export_destination_service(
+    db: Session = Depends(get_db),
+) -> ExportDestinationService:
+    """Dependency to inject export destination service."""
+    return ExportDestinationService(db)

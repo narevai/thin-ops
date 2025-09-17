@@ -5,7 +5,7 @@ Pipeline Configuration
 from typing import Any
 
 import dlt
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.config import settings
 
@@ -64,9 +64,7 @@ class PipelineConfig(BaseModel):
     max_errors_percentage: float = 5.0
     save_failed_records: bool = True
 
-    class Config:
-        env_file = ".env"
-        env_prefix = "PIPELINE_"
+    model_config = ConfigDict(env_file=".env", env_prefix="PIPELINE_")
 
     def get_dlt_pipeline(
         self, pipeline_name: str | None = None, dataset_name: str | None = None
