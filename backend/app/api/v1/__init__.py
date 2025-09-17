@@ -4,7 +4,7 @@ API v1 Router
 
 from fastapi import APIRouter
 
-from . import analytics, billing, config, export, providers, syncs
+from . import analytics, billing, config, export, export_destinations, providers, syncs
 
 # Create v1 router
 router = APIRouter()
@@ -16,3 +16,4 @@ router.include_router(export.router)
 router.include_router(billing.router)
 router.include_router(analytics.router)
 router.include_router(config.router)
+router.include_router(export_destinations.router)
