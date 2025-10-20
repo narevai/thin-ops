@@ -1,5 +1,5 @@
 ######## Frontend Build Stage ########
-FROM node:24-alpine AS frontend-build
+FROM node:25-alpine AS frontend-build
 WORKDIR /app/frontend
 RUN npm install -g pnpm
 COPY frontend/ ./
