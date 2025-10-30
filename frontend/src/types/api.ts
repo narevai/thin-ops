@@ -1026,6 +1026,166 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/v1/export-destinations/': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * List Export Destinations
+     * @description List export destinations.
+     */
+    get: operations['list_export_destinations_api_v1_export_destinations__get']
+    put?: never
+    /**
+     * Create Export Destination
+     * @description Create a new export destination.
+     */
+    post: operations['create_export_destination_api_v1_export_destinations__post']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/export-destinations/{destination_id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get Export Destination
+     * @description Get export destination by ID.
+     */
+    get: operations['get_export_destination_api_v1_export_destinations__destination_id__get']
+    /**
+     * Update Export Destination
+     * @description Update export destination.
+     */
+    put: operations['update_export_destination_api_v1_export_destinations__destination_id__put']
+    post?: never
+    /**
+     * Delete Export Destination
+     * @description Delete export destination.
+     */
+    delete: operations['delete_export_destination_api_v1_export_destinations__destination_id__delete']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/export-destinations/{destination_id}/test': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Test Destination Connection
+     * @description Test connection to export destination.
+     */
+    post: operations['test_destination_connection_api_v1_export_destinations__destination_id__test_post']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/export-destinations/{destination_id}/export': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Export Data
+     * @description Export data to destination.
+     */
+    post: operations['export_data_api_v1_export_destinations__destination_id__export_post']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/export-destinations/{destination_id}/runs': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * List Export Runs
+     * @description List export runs for destination.
+     */
+    get: operations['list_export_runs_api_v1_export_destinations__destination_id__runs_get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/export-destinations/types/info': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get Destination Types Info
+     * @description Get information about all supported export destination types.
+     *
+     *     Returns details about available destination types, their authentication methods,
+     *     and configuration options.
+     */
+    get: operations['get_destination_types_info_api_v1_export_destinations_types_info_get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/v1/export-destinations/types/{destination_type}/auth-fields': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get Auth Fields
+     * @description Get authentication field definitions for an export destination type.
+     *
+     *     Returns the fields required for each supported authentication method.
+     *
+     *     - **destination_type**: Type of destination (bigquery, snowflake, etc.)
+     *     - **auth_method**: Optional specific auth method to get fields for
+     */
+    get: operations['get_auth_fields_api_v1_export_destinations_types__destination_type__auth_fields_get']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/health': {
     parameters: {
       query?: never
@@ -1304,21 +1464,6 @@ export interface components {
        */
       cost_percentage: number
     }
-    /** AuthFieldConfig */
-    AuthFieldConfig: {
-      /** Required */
-      required: boolean
-      /** Type */
-      type: string
-      /** Placeholder */
-      placeholder?: string | null
-      /** Description */
-      description?: string | null
-      /** Fields */
-      fields?: {
-        [key: string]: components['schemas']['AuthFieldConfig']
-      } | null
-    }
     /** AuthFieldsResponse */
     AuthFieldsResponse: {
       /** Provider Type */
@@ -1330,7 +1475,9 @@ export interface components {
       /** Auth Fields */
       auth_fields: {
         [key: string]: {
-          [key: string]: components['schemas']['AuthFieldConfig']
+          [
+            key: string
+          ]: components['schemas']['app__schemas__provider__AuthFieldConfig']
         }
       }
     }
@@ -1709,6 +1856,13 @@ export interface components {
       cost_percentage: number
     }
     /**
+     * ConfigResponse
+     * @description Configuration response schema.
+     */
+    ConfigResponse: {
+      settings: components['schemas']['SettingsResponse']
+    }
+    /**
      * ConnectedProvidersResponse
      * @description Response for connected providers endpoint.
      */
@@ -1730,6 +1884,19 @@ export interface components {
        * @description Error message if status is error
        */
       message?: string | null
+    }
+    /** ConnectionTestResponse */
+    ConnectionTestResponse: {
+      /** Success */
+      success: boolean
+      /** Message */
+      message: string
+      /** Details */
+      details?: {
+        [key: string]: unknown
+      } | null
+      /** Error */
+      error?: string | null
     }
     /**
      * ContractedSavingsData
@@ -1944,6 +2111,23 @@ export interface components {
       /** Avg Duration Seconds */
       avg_duration_seconds?: number | null
     }
+    /** DestinationAuthFieldsResponse */
+    DestinationAuthFieldsResponse: {
+      /** Type */
+      type: string
+      /** Supported Auth Methods */
+      supported_auth_methods: string[]
+      /** Default Auth Method */
+      default_auth_method: string
+      /** Auth Fields */
+      auth_fields: {
+        [key: string]: {
+          [
+            key: string
+          ]: components['schemas']['app__schemas__export_destination__AuthFieldConfig']
+        }
+      }
+    }
     /**
      * EffectiveCostByCurrencyData
      * @description Single effective cost by currency data point.
@@ -2073,6 +2257,190 @@ export interface components {
        * @description Breakdown by currency
        */
       currency_breakdown: components['schemas']['CurrencyBreakdown'][]
+    }
+    /** ExportDestinationCreate */
+    ExportDestinationCreate: {
+      /**
+       * Name
+       * @description Unique name for the export destination
+       */
+      name: string
+      /**
+       * Destination Type
+       * @description Type of destination (bigquery, snowflake, etc.)
+       */
+      destination_type: string
+      /**
+       * Display Name
+       * @description Display name for UI
+       */
+      display_name?: string | null
+      /**
+       * Is Active
+       * @description Whether destination is active
+       * @default true
+       */
+      is_active: boolean
+      /**
+       * Auth Config
+       * @description Authentication configuration
+       */
+      auth_config: {
+        [key: string]: unknown
+      }
+      /**
+       * Destination Config
+       * @description Destination-specific configuration
+       */
+      destination_config?: {
+        [key: string]: unknown
+      }
+    }
+    /** ExportDestinationResponse */
+    ExportDestinationResponse: {
+      /**
+       * Name
+       * @description Unique name for the export destination
+       */
+      name: string
+      /**
+       * Destination Type
+       * @description Type of destination (bigquery, snowflake, etc.)
+       */
+      destination_type: string
+      /**
+       * Display Name
+       * @description Display name for UI
+       */
+      display_name?: string | null
+      /**
+       * Is Active
+       * @description Whether destination is active
+       * @default true
+       */
+      is_active: boolean
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string
+      /** Is Validated */
+      is_validated: boolean
+      /** Last Validation At */
+      last_validation_at?: string | null
+      /** Last Export At */
+      last_export_at?: string | null
+      /** Last Export Status */
+      last_export_status?: string | null
+      /** Export Statistics */
+      export_statistics?: {
+        [key: string]: unknown
+      } | null
+      /** Auth Configured */
+      auth_configured: boolean
+      /** Auth Method */
+      auth_method?: string | null
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string
+      /**
+       * Updated At
+       * Format: date-time
+       */
+      updated_at: string
+    }
+    /**
+     * ExportDestinationTypesResponse
+     * @description Response schema for export destination types info.
+     */
+    ExportDestinationTypesResponse: {
+      /** Destination Types */
+      destination_types: {
+        [key: string]: unknown
+      }[]
+      /** Count */
+      count: number
+    }
+    /** ExportDestinationUpdate */
+    ExportDestinationUpdate: {
+      /** Name */
+      name?: string | null
+      /** Display Name */
+      display_name?: string | null
+      /** Is Active */
+      is_active?: boolean | null
+      /** Auth Config */
+      auth_config?: {
+        [key: string]: unknown
+      } | null
+      /** Destination Config */
+      destination_config?: {
+        [key: string]: unknown
+      } | null
+    }
+    /** ExportRequest */
+    ExportRequest: {
+      /**
+       * Export Type
+       * @description Type of export (full, incremental, filtered)
+       * @default filtered
+       */
+      export_type: string
+      /**
+       * Filters
+       * @description Export filters
+       */
+      filters?: {
+        [key: string]: unknown
+      }
+    }
+    /** ExportRunResponse */
+    ExportRunResponse: {
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string
+      /**
+       * Destination Id
+       * Format: uuid
+       */
+      destination_id: string
+      /** Export Type */
+      export_type: string
+      /** Status */
+      status: string
+      /** Start Date */
+      start_date?: string | null
+      /** End Date */
+      end_date?: string | null
+      /** Filters */
+      filters?: {
+        [key: string]: unknown
+      } | null
+      /** Records Exported */
+      records_exported?: string | null
+      /** Records Failed */
+      records_failed?: string | null
+      /** Export Size Bytes */
+      export_size_bytes?: string | null
+      /**
+       * Started At
+       * Format: date-time
+       */
+      started_at: string
+      /** Completed At */
+      completed_at?: string | null
+      /** Duration Seconds */
+      duration_seconds?: string | null
+      /** Error Message */
+      error_message?: string | null
+      /** Dlt Pipeline Name */
+      dlt_pipeline_name?: string | null
+      /** Dlt Load Id */
+      dlt_load_id?: string | null
     }
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -4259,6 +4627,14 @@ export interface components {
       total_available_services: number
     }
     /**
+     * SettingsResponse
+     * @description Settings response schema.
+     */
+    SettingsResponse: {
+      /** Demo */
+      demo: boolean
+    }
+    /**
      * SpecificTagAnalysis
      * @description Analysis for specific required tags.
      */
@@ -5847,6 +6223,40 @@ export interface components {
       service: string
       /** Timestamp */
       timestamp: string
+    }
+    /** AuthFieldConfig */
+    app__schemas__export_destination__AuthFieldConfig: {
+      /** Required */
+      required: boolean
+      /** Type */
+      type: string
+      /** Placeholder */
+      placeholder?: string | null
+      /** Description */
+      description?: string | null
+      /** Fields */
+      fields?: {
+        [
+          key: string
+        ]: components['schemas']['app__schemas__export_destination__AuthFieldConfig']
+      } | null
+    }
+    /** AuthFieldConfig */
+    app__schemas__provider__AuthFieldConfig: {
+      /** Required */
+      required: boolean
+      /** Type */
+      type: string
+      /** Placeholder */
+      placeholder?: string | null
+      /** Description */
+      description?: string | null
+      /** Fields */
+      fields?: {
+        [
+          key: string
+        ]: components['schemas']['app__schemas__provider__AuthFieldConfig']
+      } | null
     }
     /**
      * HealthCheckResponse
@@ -7582,7 +7992,325 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          'application/json': components['schemas']['ConfigResponse']
+        }
+      }
+    }
+  }
+  list_export_destinations_api_v1_export_destinations__get: {
+    parameters: {
+      query?: {
+        destination_type?: string | null
+        is_active?: boolean | null
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ExportDestinationResponse'][]
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  create_export_destination_api_v1_export_destinations__post: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ExportDestinationCreate']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ExportDestinationResponse']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  get_export_destination_api_v1_export_destinations__destination_id__get: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        destination_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ExportDestinationResponse']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  update_export_destination_api_v1_export_destinations__destination_id__put: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        destination_id: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ExportDestinationUpdate']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ExportDestinationResponse']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  delete_export_destination_api_v1_export_destinations__destination_id__delete: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        destination_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
           'application/json': unknown
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  test_destination_connection_api_v1_export_destinations__destination_id__test_post: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        destination_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ConnectionTestResponse']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  export_data_api_v1_export_destinations__destination_id__export_post: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        destination_id: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ExportRequest']
+      }
+    }
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            [key: string]: unknown
+          }
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  list_export_runs_api_v1_export_destinations__destination_id__runs_get: {
+    parameters: {
+      query?: {
+        status?: string | null
+        limit?: number
+      }
+      header?: never
+      path: {
+        destination_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ExportRunResponse'][]
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
+        }
+      }
+    }
+  }
+  get_destination_types_info_api_v1_export_destinations_types_info_get: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ExportDestinationTypesResponse']
+        }
+      }
+    }
+  }
+  get_auth_fields_api_v1_export_destinations_types__destination_type__auth_fields_get: {
+    parameters: {
+      query?: {
+        /** @description Specific auth method to get fields for */
+        auth_method?: string | null
+      }
+      header?: never
+      path: {
+        destination_type: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DestinationAuthFieldsResponse']
+        }
+      }
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['HTTPValidationError']
         }
       }
     }
