@@ -1,6 +1,6 @@
 # Narev
 
-**Master the AI and cloud cost-speed-quality tradeoff with unified analytics.**
+**Convert any billing into FOCUS format**
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/narevai/narev)](https://github.com/narevai/narev/commits)
 [![Latest tag](https://img.shields.io/github/v/tag/narevai/narev?label=latest)](https://github.com/narevai/narev/tags)
@@ -9,13 +9,18 @@
 
 Narev is an open source, self-hosted FinOps platform. It allows translating SaaS data into a FOCUS 1.2 format, and exporting it.
 
-Currently, we support:
+**Sources we support**:
 - AWS
 - Azure
 - GCP
 - OpenAI
 
-In addition, we implemented lightweight FOCUS-compliant analytics.
+**Exports we support**:
+- Snowflake
+- CSV
+- Excel
+
+We ship with lightweight FOCUS-compliant analytics.
 
 ![Narev Dashboard](./.github/assets/screenshot.png)
 
