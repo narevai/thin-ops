@@ -1,5 +1,7 @@
 # Narev
 
+![Narev Banner](./.github/assets/banner.webp)
+
 **Convert any billing into FOCUS format**
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/narevai/narev)](https://github.com/narevai/narev/commits)
