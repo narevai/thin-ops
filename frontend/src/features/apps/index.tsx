@@ -3,9 +3,17 @@ import {
   IconAdjustmentsHorizontal,
   IconSortAscendingLetters,
   IconSortDescendingLetters,
+  IconSettings,
+  IconTestPipe,
+  IconTrash,
 } from '@tabler/icons-react'
 import { toast } from 'sonner'
-import type { CreateProviderRequest, Provider } from '@/lib/api'
+import type {
+  CreateProviderRequest,
+  Provider,
+  ProviderInstance,
+  UpdateProviderRequest,
+} from '@/lib/api'
 import { useConfig } from '@/hooks/use-config'
 import { useProviders } from '@/hooks/use-providers'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -20,6 +28,7 @@ import {
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
+import { ConfirmDialog } from '@/components/confirm-dialog'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProviderDialogManager } from '@/components/provider-dialogs/provider-dialog-manager'
@@ -39,9 +48,23 @@ export default function Apps() {
   )
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedApp, setSelectedApp] = useState<Provider | null>(null)
+  const [selectedInstance, setSelectedInstance] =
+    useState<ProviderInstance | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [dialogMode, setDialogMode] = useState<'create' | 'edit'>('create')
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [instanceToDelete, setInstanceToDelete] =
+    useState<ProviderInstance | null>(null)
 
-  const { providers: apps, loading, createProvider } = useProviders()
+  const {
+    providers: apps,
+    providerInstances,
+    loading,
+    createProvider,
+    updateProvider,
+    deleteProvider,
+    testProvider,
+  } = useProviders()
   const { getConfig } = useConfig()
   const [demoMode, setDemoMode] = useState<boolean>(false)
 
@@ -76,7 +99,44 @@ export default function Apps() {
   const handleConnectClick = (app: Provider) => {
     if (!app.connected) {
       setSelectedApp(app)
+      setDialogMode('create')
       setDialogOpen(true)
+    }
+  }
+
+  const handleEditClick = (app: Provider, instance: ProviderInstance) => {
+    setSelectedApp(app)
+    setSelectedInstance(instance)
+    setDialogMode('edit')
+    setDialogOpen(true)
+  }
+
+  const handleTestClick = async (instance: ProviderInstance) => {
+    try {
+      await testProvider(instance.id)
+      toast.success('Connection test successful!', {
+        description: `${instance.display_name || instance.name} is working correctly`,
+      })
+    } catch (_) {
+      // Error toast is handled in the testProvider function
+    }
+  }
+
+  const handleDeleteClick = (instance: ProviderInstance) => {
+    setInstanceToDelete(instance)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!instanceToDelete) return
+
+    try {
+      await deleteProvider(instanceToDelete.id)
+      toast.success('Provider deleted successfully!')
+      setDeleteDialogOpen(false)
+      setInstanceToDelete(null)
+    } catch (_) {
+      // Error toast is handled in the deleteProvider function
     }
   }
 
@@ -91,11 +151,36 @@ export default function Apps() {
     }
   }
 
+  const handleUpdate = async (id: string, data: UpdateProviderRequest) => {
+    try {
+      await updateProvider(id, data)
+      toast.success('Provider updated successfully!')
+      setDialogOpen(false)
+      setSelectedApp(null)
+      setSelectedInstance(null)
+    } catch (_) {
+      // Error toast is handled in the updateProvider function
+    }
+  }
+
   const handleDialogClose = (open: boolean) => {
     setDialogOpen(open)
     if (!open) {
       setSelectedApp(null)
+      setSelectedInstance(null)
     }
+  }
+
+  // Helper to get the first active instance for a provider type
+  const getProviderInstance = (
+    providerType: string
+  ): ProviderInstance | null => {
+    return (
+      providerInstances.find(
+        (instance) =>
+          instance.provider_type === providerType && instance.is_active
+      ) || null
+    )
   }
 
   return (
@@ -204,31 +289,65 @@ export default function Apps() {
           </div>
         ) : (
           <ul className='faded-bottom no-scrollbar grid gap-4 overflow-auto pt-4 pb-16 md:grid-cols-2 lg:grid-cols-3'>
-            {filteredApps.map((app) => (
-              <li
-                key={`${app.provider_type}-${app.name}`}
-                className='rounded-lg border p-4 transition-shadow hover:shadow-md'
-              >
-                <div className='mb-8 flex items-center justify-between'>
-                  <div className='bg-muted flex size-10 items-center justify-center rounded-lg p-2'>
-                    {app.logo}
+            {filteredApps.map((app) => {
+              const instance = getProviderInstance(app.provider_type)
+              return (
+                <li
+                  key={`${app.provider_type}-${app.name}`}
+                  className='rounded-lg border p-4 transition-shadow hover:shadow-md'
+                >
+                  <div className='mb-8 flex items-center justify-between'>
+                    <div className='bg-muted flex size-10 items-center justify-center rounded-lg p-2'>
+                      {app.logo}
+                    </div>
+                    {app.connected && instance ? (
+                      <div className='flex items-center gap-2'>
+                        <Button
+                          variant='ghost'
+                          size='icon'
+                          className='size-8'
+                          onClick={() => handleEditClick(app, instance)}
+                          title='Edit provider'
+                        >
+                          <IconSettings size={16} />
+                        </Button>
+                        <Button
+                          variant='ghost'
+                          size='icon'
+                          className='size-8'
+                          onClick={() => handleTestClick(instance)}
+                          title='Test connection'
+                        >
+                          <IconTestPipe size={16} />
+                        </Button>
+                        <Button
+                          variant='ghost'
+                          size='icon'
+                          className='size-8 text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-950 dark:hover:text-red-300'
+                          onClick={() => handleDeleteClick(instance)}
+                          title='Delete provider'
+                        >
+                          <IconTrash size={16} />
+                        </Button>
+                      </div>
+                    ) : (
+                      <Button
+                        variant='outline'
+                        size='sm'
+                        disabled={demoMode}
+                        onClick={() => handleConnectClick(app)}
+                      >
+                        Connect
+                      </Button>
+                    )}
                   </div>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    disabled={demoMode && !app.connected}
-                    className={`${app.connected ? 'border-blue-300 bg-blue-50 hover:bg-blue-100 dark:border-blue-700 dark:bg-blue-950 dark:hover:bg-blue-900' : ''}`}
-                    onClick={() => handleConnectClick(app)}
-                  >
-                    {app.connected ? 'Connected' : 'Connect'}
-                  </Button>
-                </div>
-                <div>
-                  <h2 className='mb-1 font-semibold'>{app.name}</h2>
-                  <p className='line-clamp-2 text-gray-500'>{app.desc}</p>
-                </div>
-              </li>
-            ))}
+                  <div>
+                    <h2 className='mb-1 font-semibold'>{app.name}</h2>
+                    <p className='line-clamp-2 text-gray-500'>{app.desc}</p>
+                  </div>
+                </li>
+              )
+            })}
           </ul>
         )}
 
@@ -243,11 +362,33 @@ export default function Apps() {
         )}
       </Main>
 
-      <ProviderDialogManager
-        open={dialogOpen}
-        onOpenChange={handleDialogClose}
-        provider={selectedApp}
-        onConnect={handleConnect}
+      {dialogMode === 'create' ? (
+        <ProviderDialogManager
+          mode='create'
+          open={dialogOpen}
+          onOpenChange={handleDialogClose}
+          provider={selectedApp}
+          onConnect={handleConnect}
+        />
+      ) : (
+        <ProviderDialogManager
+          mode='edit'
+          open={dialogOpen}
+          onOpenChange={handleDialogClose}
+          provider={selectedApp}
+          providerInstance={selectedInstance!}
+          onUpdate={handleUpdate}
+        />
+      )}
+
+      <ConfirmDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        title='Delete Provider'
+        desc={`Are you sure you want to delete ${instanceToDelete?.display_name || instanceToDelete?.name}? This action cannot be undone.`}
+        confirmText='Delete'
+        destructive
+        handleConfirm={handleConfirmDelete}
       />
     </>
   )
