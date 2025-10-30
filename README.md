@@ -1,23 +1,30 @@
-![Narev Banner](./.github/assets/banner.png)
 # Narev
 
-**Master the AI and cloud cost-speed-quality tradeoff with unified analytics.**
+![Narev Banner](./.github/assets/banner.webp)
+
+**Convert any billing into FOCUS format**
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/narevai/narev)](https://github.com/narevai/narev/commits)
 [![Latest tag](https://img.shields.io/github/v/tag/narevai/narev?label=latest)](https://github.com/narevai/narev/tags)
 [![Code Size](https://img.shields.io/github/languages/code-size/narevai/narev)](https://github.com/narevai/narev)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
-Narev is an open source, self-hosted FinOps platform for analyzing and optimizing your AI and cloud spend. It unifies cost and usage data from AWS, Azure, GCP, and OpenAI, providing real-time dashboards, FOCUS-compliant analytics, and actionable recommendations—all while keeping your data private and under your control.
+Narev is an open source, self-hosted FinOps platform. It allows translating SaaS data into a FOCUS 1.2 format, and exporting it.
+
+**Sources we support**:
+- AWS
+- Azure
+- GCP
+- OpenAI
+
+**Exports we support**:
+- Snowflake
+- CSV
+- Excel
+
+We ship with lightweight FOCUS-compliant analytics.
 
 ![Narev Dashboard](./.github/assets/screenshot.png)
-
-## Features
-
-- **Multi-Cloud & AI Support:** Analyze costs across AWS, Azure, GCP, and OpenAI.
-- **FOCUS-Compliant:** Standardizes data using the FinOps Open Cost and Usage Specification.
-- **Self-Hosted:** Your data, your infrastructure—no third-party sharing.
-- **Real-Time Insights:** Live dashboards, usage breakdowns, and actionable recommendations.
 
 ## Quick Start
 
@@ -34,7 +41,8 @@ docker run -d \
 ### Production
 First, generate an encryption key:
 ```bash
-python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+python -c "from cryptography.fernet import Fernet; \
+print(Fernet.generate_key().decode())"
 ```
 Then run the container with your generated key:
 ```bash
@@ -46,7 +54,7 @@ docker run -d \
   -e ENVIRONMENT="production" \
   ghcr.io/narevai/narev:latest
 ```
-- Full production setup in the [Deployment Guide](https://www.narev.ai/docs/getting-started/deployment.html).
+- Full production setup in the [Deployment Guide](https://www.narev.ai/docs/opensource/getting-started/deployment).
 
 ## License
 
