@@ -3,14 +3,27 @@ NarevAI Billing Analyzer - Config API v1
 """
 
 from fastapi import APIRouter
+from pydantic import BaseModel
 
 from app.config import get_settings
 
 router = APIRouter(prefix="/config", tags=["config"])
 
 
-@router.get("")
-def get_config():
+class ConfigResponse(BaseModel):
+    """Configuration response schema."""
+    
+    settings: "SettingsResponse"
+
+
+class SettingsResponse(BaseModel):
+    """Settings response schema."""
+    
+    demo: bool
+
+
+@router.get("", response_model=ConfigResponse)
+def get_config() -> ConfigResponse:
     """
     Get application configuration.
 
@@ -18,4 +31,4 @@ def get_config():
     """
     settings = get_settings()
 
-    return {"settings": {"demo": settings.demo}}
+    return ConfigResponse(settings=SettingsResponse(demo=settings.demo))
