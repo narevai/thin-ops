@@ -5,12 +5,13 @@ NarevAI Billing Analyzer - Config API v1
 from fastapi import APIRouter
 
 from app.config import get_settings
+from app.schemas.config import ConfigResponse, SettingsResponse
 
 router = APIRouter(prefix="/config", tags=["config"])
 
 
-@router.get("")
-def get_config():
+@router.get("", response_model=ConfigResponse)
+def get_config() -> ConfigResponse:
     """
     Get application configuration.
 
@@ -18,4 +19,4 @@ def get_config():
     """
     settings = get_settings()
 
-    return {"settings": {"demo": settings.demo}}
+    return ConfigResponse(settings=SettingsResponse(demo=settings.demo))

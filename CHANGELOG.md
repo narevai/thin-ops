@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2025-10-30
+
+### Added
+- Data export pipeline with destination management
+- Edit dialog for modifying entries
+- Dynamic filtering on the cost dashboard
+
+### Fixed
+- Removed Dockerfile layer caching
+
+### Dependencies
+- Updated `@eslint/js` from 9.29.0 to 9.32.0
+- Updated `sonner` from 2.0.5 to 2.0.6
+- Updated `@vitejs/plugin-react-swc` from 3.10.2 to 3.11.0
+- Updated GitHub Actions: `actions/download-artifact` from v4 to v5
+- Updated GitHub Actions: `actions/checkout` from v4 to v5
+
 ## [0.1.1] - 2025-07-28
 
 ### Security

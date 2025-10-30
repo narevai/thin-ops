@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "narev-api"
-version = "0.1.1"
+version = "0.2.0"
 description = "NarevAI - FOCUS billing data analyzer"
 requires-python = ">=3.12,<3.13"
 dependencies = [
