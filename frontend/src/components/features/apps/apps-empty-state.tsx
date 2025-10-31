@@ -9,7 +9,7 @@ export function AppsEmptyState({ searchTerm, appType }: AppsEmptyStateProps) {
       <p className='text-muted-foreground'>
         {searchTerm || appType !== 'all'
           ? 'No providers match your filters'
-          : 'No providers available'}
+          : 'Connect provider to get started'}
       </p>
     </div>
   )
