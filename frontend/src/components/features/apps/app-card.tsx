@@ -5,8 +5,6 @@ import { Button } from '@/components/ui/button'
 interface AppCardProps {
   app: Provider
   instance: ProviderInstance | null
-  demoMode: boolean
-  onConnect: (app: Provider) => void
   onEdit: (app: Provider, instance: ProviderInstance) => void
   onTest: (instance: ProviderInstance) => void
   onDelete: (instance: ProviderInstance) => void
@@ -15,8 +13,6 @@ interface AppCardProps {
 export function AppCard({
   app,
   instance,
-  demoMode,
-  onConnect,
   onEdit,
   onTest,
   onDelete,
@@ -30,7 +26,7 @@ export function AppCard({
         <div className='bg-muted flex size-10 items-center justify-center rounded-lg p-2'>
           {app.logo}
         </div>
-        {app.connected && instance ? (
+        {app.connected && instance && (
           <div className='flex items-center gap-2'>
             <Button
               variant='ghost'
@@ -60,15 +56,6 @@ export function AppCard({
               <IconTrash size={16} />
             </Button>
           </div>
-        ) : (
-          <Button
-            variant='outline'
-            size='sm'
-            disabled={demoMode}
-            onClick={() => onConnect(app)}
-          >
-            Connect
-          </Button>
         )}
       </div>
       <div>

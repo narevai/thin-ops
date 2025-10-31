@@ -11,6 +11,7 @@ import { useProviders } from '@/hooks/use-providers'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Separator } from '@/components/ui/separator'
 import { ConfirmDialog } from '@/components/confirm-dialog'
+import { AddProviderCard } from '@/components/features/apps/add-provider-card'
 import { AppCard } from '@/components/features/apps/app-card'
 import { AppsEmptyState } from '@/components/features/apps/apps-empty-state'
 import { AppsFilters } from '@/components/features/apps/apps-filters'
@@ -18,6 +19,7 @@ import { AppsLoadingSkeleton } from '@/components/features/apps/apps-loading-ske
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProviderDialogManager } from '@/components/provider-dialogs/provider-dialog-manager'
+import { ProviderSelectorDialog } from '@/components/provider-dialogs/provider-selector-dialog'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 
@@ -35,6 +37,7 @@ export default function Apps() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [instanceToDelete, setInstanceToDelete] =
     useState<ProviderInstance | null>(null)
+  const [selectorDialogOpen, setSelectorDialogOpen] = useState(false)
 
   const {
     providers: apps,
@@ -62,26 +65,31 @@ export default function Apps() {
   }, [])
 
   const filteredApps = apps
+    .filter((app) => app.connected)
     .sort((a, b) =>
       sort === 'ascending'
         ? a.name.localeCompare(b.name)
         : b.name.localeCompare(a.name)
     )
-    .filter((app) =>
-      appType === 'connected'
-        ? app.connected
-        : appType === 'notConnected'
-          ? !app.connected
-          : true
-    )
     .filter((app) => app.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
-  const handleConnectClick = (app: Provider) => {
-    if (!app.connected) {
-      setSelectedApp(app)
-      setDialogMode('create')
-      setDialogOpen(true)
+  const handleAddProviderClick = () => {
+    if (demoMode) {
+      toast.error('Cannot add providers in demo mode', {
+        description:
+          'To connect real providers, please disable demo mode in your configuration.',
+      })
+      return
     }
+
+    setSelectorDialogOpen(true)
+  }
+
+  const handleProviderSelect = (app: Provider) => {
+    setSelectedApp(app)
+    setDialogMode('create')
+    setSelectorDialogOpen(false)
+    setDialogOpen(true)
   }
 
   const handleEditClick = (app: Provider, instance: ProviderInstance) => {
@@ -211,6 +219,7 @@ export default function Apps() {
           <AppsLoadingSkeleton />
         ) : (
           <ul className='faded-bottom no-scrollbar grid gap-4 overflow-auto pt-4 pb-16 md:grid-cols-2 lg:grid-cols-3'>
+            <AddProviderCard onAddClick={handleAddProviderClick} />
             {filteredApps.map((app) => {
               const instance = getProviderInstance(app.provider_type)
               return (
@@ -218,8 +227,6 @@ export default function Apps() {
                   key={`${app.provider_type}-${app.name}`}
                   app={app}
                   instance={instance}
-                  demoMode={demoMode}
-                  onConnect={handleConnectClick}
                   onEdit={handleEditClick}
                   onTest={handleTestClick}
                   onDelete={handleDeleteClick}
@@ -252,6 +259,13 @@ export default function Apps() {
           onUpdate={handleUpdate}
         />
       )}
+
+      <ProviderSelectorDialog
+        open={selectorDialogOpen}
+        onOpenChange={setSelectorDialogOpen}
+        providers={apps}
+        onSelect={handleProviderSelect}
+      />
 
       <ConfirmDialog
         open={deleteDialogOpen}

@@ -1,0 +1,27 @@
+import { IconPlus } from '@tabler/icons-react'
+
+interface AddProviderCardProps {
+  onAddClick: () => void
+}
+
+export function AddProviderCard({ onAddClick }: AddProviderCardProps) {
+  return (
+    <li className='rounded-lg border border-dashed p-4 transition-all hover:border-solid hover:shadow-md'>
+      <button
+        className='flex size-full flex-col items-center justify-center gap-4 py-8'
+        onClick={onAddClick}
+        type='button'
+      >
+        <div className='bg-muted hover:bg-muted/80 flex size-16 items-center justify-center rounded-lg transition-colors'>
+          <IconPlus size={32} className='text-muted-foreground' />
+        </div>
+        <div className='text-center'>
+          <h2 className='mb-1 font-semibold'>Connect</h2>
+          <p className='text-sm text-gray-500'>
+            Connect a new billing provider
+          </p>
+        </div>
+      </button>
+    </li>
+  )
+}
