@@ -11,13 +11,15 @@ import { useProviders } from '@/hooks/use-providers'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Separator } from '@/components/ui/separator'
 import { ConfirmDialog } from '@/components/confirm-dialog'
-import { AddProviderCard } from '@/components/features/apps/add-provider-card'
-import { AppCard } from '@/components/features/apps/app-card'
-import { AppsEmptyState } from '@/components/features/apps/apps-empty-state'
-import { AppsFilters } from '@/components/features/apps/apps-filters'
-import { AppsLoadingSkeleton } from '@/components/features/apps/apps-loading-skeleton'
-import { ProviderDialogManager } from '@/components/features/apps/dialogs/provider-dialog-manager'
-import { ProviderSelectorDialog } from '@/components/features/apps/dialogs/provider-selector-dialog'
+import {
+  AddProviderCard,
+  AppCard,
+  AppsEmptyState,
+  AppsFilters,
+  AppsLoadingSkeleton,
+  ProviderDialogManager,
+  ProviderSelectorDialog,
+} from '@/components/features/apps'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { Search } from '@/components/search'
