@@ -22,12 +22,12 @@ export function AppCard({
       key={`${app.provider_type}-${app.name}`}
       className='flex h-full flex-col rounded-lg border p-4 transition-shadow hover:shadow-md'
     >
-      <div className='mb-auto flex items-center justify-between pb-8'>
+      <div className='mb-auto flex items-center justify-between pb-4'>
         <div className='bg-muted flex size-10 items-center justify-center rounded-lg p-2'>
           {app.logo}
         </div>
         {app.connected && instance && (
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-1'>
             <Button
               variant='ghost'
               size='icon'
@@ -59,7 +59,7 @@ export function AppCard({
         )}
       </div>
       <div>
-        <h2 className='mb-1 font-semibold'>
+        <h2 className='mb-0.5 font-semibold'>
           {instance?.display_name || instance?.name || app.name}
         </h2>
         <p className='text-muted-foreground line-clamp-2 text-sm'>{app.name}</p>
