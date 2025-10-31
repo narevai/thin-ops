@@ -59,8 +59,10 @@ export function AppCard({
         )}
       </div>
       <div>
-        <h2 className='mb-1 font-semibold'>{app.name}</h2>
-        <p className='line-clamp-2 text-gray-500'>{app.desc}</p>
+        <h2 className='mb-1 font-semibold'>
+          {instance?.display_name || instance?.name || app.name}
+        </h2>
+        <p className='text-muted-foreground line-clamp-2 text-sm'>{app.name}</p>
       </div>
     </li>
   )
