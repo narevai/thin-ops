@@ -20,9 +20,9 @@ export function AppCard({
   return (
     <li
       key={`${app.provider_type}-${app.name}`}
-      className='rounded-lg border p-4 transition-shadow hover:shadow-md'
+      className='flex h-full flex-col rounded-lg border p-4 transition-shadow hover:shadow-md'
     >
-      <div className='mb-8 flex items-center justify-between'>
+      <div className='mb-auto flex items-center justify-between pb-8'>
         <div className='bg-muted flex size-10 items-center justify-center rounded-lg p-2'>
           {app.logo}
         </div>

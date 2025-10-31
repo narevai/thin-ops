@@ -6,7 +6,7 @@ interface AddProviderCardProps {
 
 export function AddProviderCard({ onAddClick }: AddProviderCardProps) {
   return (
-    <li className='rounded-lg border border-dashed p-4 transition-all hover:border-solid hover:shadow-md'>
+    <li className='flex h-full flex-col rounded-lg border border-dashed p-4 transition-all hover:border-solid hover:shadow-md'>
       <button
         className='flex size-full flex-col items-center justify-center gap-4 py-8'
         onClick={onAddClick}
