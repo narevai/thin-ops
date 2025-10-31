@@ -11,6 +11,10 @@ import { useProviders } from '@/hooks/use-providers'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Separator } from '@/components/ui/separator'
 import { ConfirmDialog } from '@/components/confirm-dialog'
+import { Header } from '@/components/layout/header'
+import { Main } from '@/components/layout/main'
+import { Search } from '@/components/search'
+import { ThemeSwitch } from '@/components/theme-switch'
 import {
   AddProviderCard,
   AppCard,
@@ -19,11 +23,7 @@ import {
   AppsLoadingSkeleton,
   ProviderDialogManager,
   ProviderSelectorDialog,
-} from '@/components/features/apps'
-import { Header } from '@/components/layout/header'
-import { Main } from '@/components/layout/main'
-import { Search } from '@/components/search'
-import { ThemeSwitch } from '@/components/theme-switch'
+} from './components'
 
 export default function Apps() {
   const [sort, setSort] = useState<'ascending' | 'descending'>('ascending')
