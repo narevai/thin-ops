@@ -64,14 +64,34 @@ export default function Apps() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const filteredApps = apps
-    .filter((app) => app.connected)
-    .sort((a, b) =>
-      sort === 'ascending'
-        ? a.name.localeCompare(b.name)
-        : b.name.localeCompare(a.name)
+  // Get all active provider instances with their provider info
+  const activeInstances = providerInstances
+    .filter((instance) => instance.is_active)
+    .map((instance) => {
+      const provider = apps.find(
+        (app) => app.provider_type === instance.provider_type
+      )
+      return { instance, provider }
+    })
+    .filter((item) => item.provider !== undefined)
+
+  // Filter and sort instances based on search and sort preferences
+  const filteredInstances = activeInstances
+    .filter(
+      ({ instance, provider }) =>
+        provider!.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        instance.display_name
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        instance.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .filter((app) => app.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    .sort((a, b) => {
+      const nameA = a.instance.display_name || a.provider!.name
+      const nameB = b.instance.display_name || b.provider!.name
+      return sort === 'ascending'
+        ? nameA.localeCompare(nameB)
+        : nameB.localeCompare(nameA)
+    })
 
   const handleAddProviderClick = () => {
     if (demoMode) {
@@ -159,18 +179,6 @@ export default function Apps() {
     }
   }
 
-  // Helper to get the first active instance for a provider type
-  const getProviderInstance = (
-    providerType: string
-  ): ProviderInstance | null => {
-    return (
-      providerInstances.find(
-        (instance) =>
-          instance.provider_type === providerType && instance.is_active
-      ) || null
-    )
-  }
-
   return (
     <>
       <Header>
@@ -218,25 +226,22 @@ export default function Apps() {
         {loading ? (
           <AppsLoadingSkeleton />
         ) : (
-          <ul className='faded-bottom no-scrollbar grid gap-4 overflow-auto pt-4 pb-16 md:grid-cols-2 lg:grid-cols-3'>
+          <ul className='faded-bottom no-scrollbar grid auto-rows-fr gap-4 overflow-auto pt-4 pb-16 md:grid-cols-2 lg:grid-cols-3'>
             <AddProviderCard onAddClick={handleAddProviderClick} />
-            {filteredApps.map((app) => {
-              const instance = getProviderInstance(app.provider_type)
-              return (
-                <AppCard
-                  key={`${app.provider_type}-${app.name}`}
-                  app={app}
-                  instance={instance}
-                  onEdit={handleEditClick}
-                  onTest={handleTestClick}
-                  onDelete={handleDeleteClick}
-                />
-              )
-            })}
+            {filteredInstances.map(({ instance, provider }) => (
+              <AppCard
+                key={instance.id}
+                app={provider!}
+                instance={instance}
+                onEdit={handleEditClick}
+                onTest={handleTestClick}
+                onDelete={handleDeleteClick}
+              />
+            ))}
           </ul>
         )}
 
-        {!loading && filteredApps.length === 0 && (
+        {!loading && filteredInstances.length === 0 && (
           <AppsEmptyState searchTerm={searchTerm} appType={appType} />
         )}
       </Main>
