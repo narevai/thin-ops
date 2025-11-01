@@ -40,13 +40,10 @@
       }
     },
   
-    "forwardPorts": [5173, 8000],
+    "forwardPorts": [5173],
     "portsAttributes": {
       "5173": {
         "label": "Frontend (Vite)"
-      },
-      "8000": {
-        "label": "Backend API"
       }
     },
     
