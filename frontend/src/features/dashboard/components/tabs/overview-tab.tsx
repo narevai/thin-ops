@@ -1,4 +1,4 @@
-import { useDashboardState } from '@/context/dashboard-state-context'
+import { useState } from 'react'
 import { OverviewKpiTiles } from '@/features/dashboard/components/tiles/overview-kpi-tiles'
 import { ServiceCategoryBreakdownTile } from '@/features/dashboard/components/tiles/service-category-breakdown-tile'
 import { ServiceCostAnalysisTile } from '@/features/dashboard/components/tiles/service-cost-analysis-tile'
@@ -7,7 +7,19 @@ import { ServiceCostsByRegionTile } from '@/features/dashboard/components/tiles/
 import { SpendingByBillingPeriodTile } from '@/features/dashboard/components/tiles/spending-by-billing-period-tile'
 import { SpendingByProviderTrendsTile } from '@/features/dashboard/components/tiles/spending-by-provider-trends-tile'
 import { OverviewFilters } from './overview-filters'
-import { TabComponentProps } from './types'
+import {
+  OverviewFilters as OverviewFiltersType,
+  TabComponentProps,
+} from './types'
+
+const defaultFilters: OverviewFiltersType = {
+  dateRange: {
+    start_date: new Date('2024-07-20T00:00:00.000Z').toISOString(),
+    end_date: new Date('2025-07-20T00:00:00.000Z').toISOString(),
+  },
+  providers: [],
+  services: [],
+}
 
 export function OverviewTab({ className }: TabComponentProps) {
   {
@@ -20,7 +32,7 @@ export function OverviewTab({ className }: TabComponentProps) {
   Service Costs by Region
   Service Costs by Subaccount */
   }
-  const { filters, setFilters } = useDashboardState()
+  const [filters, setFilters] = useState<OverviewFiltersType>(defaultFilters)
 
   return (
     <div className={`space-y-4 ${className || ''}`}>
