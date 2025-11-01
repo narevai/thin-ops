@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2025-11-01
+
+### Added
+- Support for multiple accounts per provider
+
+### Changed
+- Removed redundant port forwarding in dev container
+- Removed labels from dependabot configuration
+
+### Documentation
+- Updated documentation links in README
+
+### Dependencies
+- Updated `vite` from 7.0.6 to 7.0.8 in frontend
+- Updated `axios` from 1.10.0 to 1.12.0 in frontend
+- Updated `prettier` from 3.6.0 to 3.6.2 in frontend
+- Updated `dlt[az,filesystem,postgres,sqlalchemy]` from 1.13.0 to 1.18.1 in backend
+- Updated GitHub Actions: `actions/upload-artifact` from v4 to v5
+- Updated GitHub Actions: `actions/download-artifact` from v5 to v6
+
+
 ## [0.2.0] - 2025-10-30
 
 ### Added
