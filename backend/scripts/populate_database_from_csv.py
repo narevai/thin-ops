@@ -117,6 +117,70 @@ try:
     print(f"- Imported {len(df_billing_data)} billing records")
     print(f"- Imported {len(df_pipeline_runs)} pipeline run records")
 
+    # Fix provider IDs: Map provider_name to correct x_provider_id
+    print("\nMapping provider names to provider IDs...")
+    from sqlalchemy import text
+
+    with engine.begin() as conn:
+        # Map AWS records
+        result = conn.execute(
+            text(
+                "UPDATE billing_data SET x_provider_id = :provider_id "
+                "WHERE provider_name = :provider_name"
+            ),
+            {
+                "provider_id": "16930d27-0405-4f26-a368-28ea0f88fee7",
+                "provider_name": "Amazon Web Services",
+            },
+        )
+        print(f"- Updated {result.rowcount} records for 'Amazon Web Services' → demo_aws")
+
+        # Map Azure records
+        result = conn.execute(
+            text(
+                "UPDATE billing_data SET x_provider_id = :provider_id "
+                "WHERE provider_name = :provider_name"
+            ),
+            {
+                "provider_id": "b8865cfb-a35f-4d8a-ac59-77f8b8b8ba11",
+                "provider_name": "Microsoft",
+            },
+        )
+        print(f"- Updated {result.rowcount} records for 'Microsoft' → demo_azure")
+
+        # Split Google records between two GCP providers (50/50 based on row order)
+        # First, get total count of Google records
+        google_count = conn.execute(
+            text("SELECT COUNT(*) FROM billing_data WHERE provider_name = 'Google'")
+        ).scalar()
+        
+        if google_count > 0:
+            # Assign first half to demo_gcp
+            result = conn.execute(
+                text(
+                    "UPDATE billing_data SET x_provider_id = :provider_id "
+                    "WHERE provider_name = 'Google' "
+                    "AND id IN (SELECT id FROM billing_data WHERE provider_name = 'Google' LIMIT :limit)"
+                ),
+                {
+                    "provider_id": "11cfecab-590d-43a6-8d89-20e79bea59ea",
+                    "limit": google_count // 2,
+                },
+            )
+            print(f"- Updated {result.rowcount} records for 'Google' → demo_gcp")
+
+            # Assign remaining records to demo_gcp_2
+            result = conn.execute(
+                text(
+                    "UPDATE billing_data SET x_provider_id = :provider_id "
+                    "WHERE provider_name = 'Google' AND x_provider_id != '11cfecab-590d-43a6-8d89-20e79bea59ea'"
+                ),
+                {"provider_id": "61c8abe2-9881-4d71-882f-488794916ce5"},
+            )
+            print(f"- Updated {result.rowcount} records for 'Google' → demo_gcp_2")
+
+    print("✅ Provider ID mapping completed!")
+
 except Exception as e:
     error_msg = str(e).lower()
     if "unique constraint" in error_msg or "duplicate" in error_msg:
