@@ -1,5 +1,5 @@
 // components/filters/date-range-filter.tsx
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import { DateRange } from 'react-day-picker'
 import { Button } from '@/components/ui/button'
@@ -9,6 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { useDashboardStore } from '@/features/dashboard/store/dashboard-store'
 import { DateRange as DateRangeType } from './types'
 
 interface DateRangeFilterProps {
@@ -17,10 +18,20 @@ interface DateRangeFilterProps {
 }
 
 export function DateRangeFilter({ value, onChange }: DateRangeFilterProps) {
+  const setDateRange = useDashboardStore((state) => state.setDateRange)
+
   const [selected, setSelected] = useState<DateRange | undefined>({
     from: new Date(value.start_date),
     to: new Date(value.end_date),
   })
+
+  // Sync selected state with the value prop
+  useEffect(() => {
+    setSelected({
+      from: new Date(value.start_date),
+      to: new Date(value.end_date),
+    })
+  }, [value])
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -33,10 +44,16 @@ export function DateRangeFilter({ value, onChange }: DateRangeFilterProps) {
     setSelected(range)
 
     if (range?.from && range?.to) {
-      onChange({
+      const newDateRange = {
         start_date: range.from.toISOString(),
         end_date: range.to.toISOString(),
-      })
+      }
+
+      // Update Zustand store (will only persist if not in demo mode)
+      setDateRange(newDateRange)
+
+      // Also call onChange for immediate UI updates
+      onChange(newDateRange)
     }
   }
 

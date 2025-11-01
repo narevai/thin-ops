@@ -1,4 +1,5 @@
-import { useDashboardState } from '@/context/dashboard-state-context'
+import { useEffect } from 'react'
+import { config } from '@/lib/api'
 import { OverviewKpiTiles } from '@/features/dashboard/components/tiles/overview-kpi-tiles'
 import { ServiceCategoryBreakdownTile } from '@/features/dashboard/components/tiles/service-category-breakdown-tile'
 import { ServiceCostAnalysisTile } from '@/features/dashboard/components/tiles/service-cost-analysis-tile'
@@ -6,6 +7,7 @@ import { ServiceCostTrendsTile } from '@/features/dashboard/components/tiles/ser
 import { ServiceCostsByRegionTile } from '@/features/dashboard/components/tiles/service-costs-by-region-tile'
 import { SpendingByBillingPeriodTile } from '@/features/dashboard/components/tiles/spending-by-billing-period-tile'
 import { SpendingByProviderTrendsTile } from '@/features/dashboard/components/tiles/spending-by-provider-trends-tile'
+import { useDashboardStore } from '@/features/dashboard/store/dashboard-store'
 import { OverviewFilters } from './overview-filters'
 import { TabComponentProps } from './types'
 
@@ -20,7 +22,19 @@ export function OverviewTab({ className }: TabComponentProps) {
   Service Costs by Region
   Service Costs by Subaccount */
   }
-  const { filters, setFilters } = useDashboardState()
+  const filters = useDashboardStore((state) => state.filters)
+  const setFilters = useDashboardStore((state) => state.setFilters)
+  const setIsDemo = useDashboardStore((state) => state.setIsDemo)
+
+  // Fetch config to determine demo mode
+  useEffect(() => {
+    ;(async () => {
+      const response = await config.get()
+      const isDemo = response.data?.settings?.demo ?? false
+      setIsDemo(isDemo)
+    })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className={`space-y-4 ${className || ''}`}>
