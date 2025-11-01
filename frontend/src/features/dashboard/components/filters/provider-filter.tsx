@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Check, ChevronsUpDown } from 'lucide-react'
+import { providers as providersApi } from '@/lib/api'
 import { cn } from '@/lib/utils'
-import { useAnalytics } from '@/hooks/use-analytics'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -18,6 +18,14 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 
+interface ProviderInstance {
+  id: string
+  name: string
+  provider_type: string
+  display_name?: string | null
+  is_active: boolean
+}
+
 interface ProviderFilterProps {
   value: string[]
   onChange: (value: string[]) => void
@@ -25,19 +33,25 @@ interface ProviderFilterProps {
 
 export function ProviderFilter({ value, onChange }: ProviderFilterProps) {
   const [open, setOpen] = useState(false)
-  const [providers, setProviders] = useState<string[]>([])
-  const { getConnectedProviders, loading } = useAnalytics()
+  const [providers, setProviders] = useState<ProviderInstance[]>([])
+  const [loading, setLoading] = useState(false)
   const [hasInitialized, setHasInitialized] = useState(false)
 
   useEffect(() => {
     const fetchProviders = async () => {
-      const response = await getConnectedProviders()
-      if (response?.data) {
-        setProviders(response.data)
+      try {
+        setLoading(true)
+        const { data, error } = await providersApi.list()
+        if (!error && data) {
+          // Filter to only active providers
+          const activeProviders = data.filter((p) => p.is_active)
+          setProviders(activeProviders)
+        }
+      } finally {
+        setLoading(false)
       }
     }
     fetchProviders()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const handleProviderToggle = (providerName: string) => {
     const newValue = value.includes(providerName)
@@ -47,7 +61,7 @@ export function ProviderFilter({ value, onChange }: ProviderFilterProps) {
   }
 
   const handleSelectAll = () => {
-    onChange(providers)
+    onChange(providers.map((p) => p.name))
   }
 
   const displayText = () => {
@@ -61,6 +75,10 @@ export function ProviderFilter({ value, onChange }: ProviderFilterProps) {
     onChange([])
   }
 
+  const getProviderDisplayName = (provider: ProviderInstance) => {
+    return provider.display_name || provider.name || provider.provider_type
+  }
+
   useEffect(() => {
     if (
       !hasInitialized &&
@@ -68,10 +86,11 @@ export function ProviderFilter({ value, onChange }: ProviderFilterProps) {
       providers.length > 0 &&
       value.length === 0
     ) {
-      onChange(providers)
+      onChange(providers.map((p) => p.name))
       setHasInitialized(true)
     }
-  }, [hasInitialized, loading, providers, value, onChange])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasInitialized, loading, providers.length, value.length])
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -119,23 +138,30 @@ export function ProviderFilter({ value, onChange }: ProviderFilterProps) {
                     </Button>
                   </div>
                 </div>
-                {providers.map((providerName) => (
+                {providers.map((provider) => (
                   <CommandItem
-                    key={providerName}
-                    onSelect={() => handleProviderToggle(providerName)}
+                    key={provider.name}
+                    onSelect={() => handleProviderToggle(provider.name)}
                     className='flex cursor-pointer items-center space-x-2'
                   >
                     <Checkbox
-                      checked={value.includes(providerName)}
-                      onChange={() => handleProviderToggle(providerName)}
+                      checked={value.includes(provider.name)}
+                      onChange={() => handleProviderToggle(provider.name)}
                     />
                     <div className='flex flex-1 flex-col'>
-                      <span className='text-sm'>{providerName}</span>
+                      <span className='text-sm'>
+                        {getProviderDisplayName(provider)}
+                      </span>
+                      {provider.display_name && (
+                        <span className='text-muted-foreground text-xs'>
+                          {provider.provider_type}
+                        </span>
+                      )}
                     </div>
                     <Check
                       className={cn(
                         'h-4 w-4',
-                        value.includes(providerName)
+                        value.includes(provider.name)
                           ? 'opacity-100'
                           : 'opacity-0'
                       )}
