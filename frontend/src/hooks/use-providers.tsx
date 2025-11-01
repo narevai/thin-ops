@@ -40,7 +40,7 @@ export function useProviders() {
 
   const fetchProviderInstances = async () => {
     try {
-      const { data, error } = await providers.list()
+      const { data, error } = await providers.list({ include_inactive: true })
       if (error) throw new Error('Failed to fetch provider instances')
 
       return (data as ListProvidersResponse) || []
