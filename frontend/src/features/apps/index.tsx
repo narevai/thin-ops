@@ -66,9 +66,8 @@ export default function Apps() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Get all active provider instances with their provider info
-  const activeInstances = providerInstances
-    .filter((instance) => instance.is_active)
+  // Get all provider instances with their provider info (including inactive)
+  const allInstances = providerInstances
     .map((instance) => {
       const provider = apps.find(
         (app) => app.provider_type === instance.provider_type
@@ -78,7 +77,7 @@ export default function Apps() {
     .filter((item) => item.provider !== undefined)
 
   // Filter and sort instances based on search and sort preferences
-  const filteredInstances = activeInstances
+  const filteredInstances = allInstances
     .filter(
       ({ instance, provider }) =>
         provider!.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
