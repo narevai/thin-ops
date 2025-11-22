@@ -36,6 +36,9 @@ jobs:
       - name: Lint Frontend
         run: pnpm run lint
 
+      - name: Check Unused Code
+        run: pnpm run knip
+
       - name: Build Frontend
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
