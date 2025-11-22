@@ -1,6 +1,6 @@
 # Core framework
 fastapi==0.116.1
-uvicorn[standard]==0.35.0
+uvicorn[standard]==0.38.0
 
 # Database
 sqlalchemy==2.0.44
