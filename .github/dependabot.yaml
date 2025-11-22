@@ -24,6 +24,13 @@ updates:
       interval: "weekly"
     open-pull-requests-limit: 5
 
+  # Docs dependencies (disabled - ignoring all updates)
+  - package-ecosystem: "npm"
+    directory: "/docs"
+    open-pull-requests-limit: 0
+    ignore:
+      - dependency-name: "*"
+
   # GitHub Actions dependencies
   - package-ecosystem: "github-actions"
     directory: "/"
