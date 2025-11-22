@@ -33,5 +33,3 @@ export function useConfig() {
     getConfig,
   }
 }
-
-export default useConfig
