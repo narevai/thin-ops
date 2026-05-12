@@ -247,7 +247,7 @@ class TestAWSAuth:
         auth = AWSAuth(auth_config)
 
         with pytest.raises(
-            ValueError, match="AWS only supports AuthMethod.MULTI_FACTOR authentication"
+            ValueError, match="AWS only supports multi_factor authentication"
         ):
             auth.validate()
 
