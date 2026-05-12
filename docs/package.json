@@ -2,6 +2,12 @@
   "name": "narev-docs",
   "version": "0.2.3",
   "description": "Documentation for Narev - FinOps Cost Explorer",
+  "packageManager": "pnpm@10.23.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
   "scripts": {
     "dev": "vitepress dev --port 5174 --host 0.0.0.0",
     "build": "vitepress build",

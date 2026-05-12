@@ -2,13 +2,13 @@
 Generic authentication configuration models for flexible provider authentication.
 """
 
-from enum import Enum
+from enum import StrEnum
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
-class AuthMethod(str, Enum):
+class AuthMethod(StrEnum):
     """Generic authentication methods."""
 
     # Basic authentication types
