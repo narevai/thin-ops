@@ -1,6 +1,6 @@
 {
   "name": "narev-docs",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Documentation for Narev - FinOps Cost Explorer",
   "packageManager": "pnpm@10.23.0",
   "pnpm": {
