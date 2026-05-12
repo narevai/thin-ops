@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.4] - 2026-05-12
+
+### Security
+
+- Bumped the Dependabot `npm_and_yarn` dependency group in `docs/` and `frontend/` to pull in current patch and minor releases across the toolchain (build, parsing, and HTTP stack), reducing exposure to known issues in older transitive versions.
+
+### Dependencies
+
+**`docs/`**
+
+- `mdast-util-to-hast` 13.2.0 → 13.2.1
+- `minimatch` 9.0.5 → 9.0.9
+- `picomatch` 4.0.3 → 4.0.4
+- `postcss` 8.5.6 → 8.5.14
+- `preact` 10.26.9 → 10.29.1
+- `rollup` 4.45.1 → 4.60.3
+- `vite` 7.0.5 → 7.3.3
+
+**`frontend/`**
+
+- `axios` 1.13.2 → 1.15.2
+- `vite` 7.0.8 → 7.3.2
+- `flatted` 3.3.3 → 3.4.2
+- `lodash` 4.17.21 → 4.18.1
+- `minimatch` 3.1.2 → 3.1.5
+- `tar` 7.4.3 → 7.5.15
+- Transitive updates included in the same bump: `follow-redirects` 1.15.11 → 1.16.0, `picomatch` 2.3.1 → 2.3.2, `postcss` 8.5.6 → 8.5.14, `rollup` 4.52.5 → 4.60.3
+
+### Fixed
+
+- Adjusted CI so the pipeline passes with the updated dependency set.
+
+
 ## [0.2.3] - 2025-11-22
 
 ### Security
