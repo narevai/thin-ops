@@ -188,7 +188,7 @@ class TestGCPAuth:
 
         with pytest.raises(
             ValueError,
-            match="GCP only supports AuthMethod.SERVICE_ACCOUNT authentication",
+            match="GCP only supports service_account authentication",
         ):
             auth.validate()
 

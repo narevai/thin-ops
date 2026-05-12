@@ -9,7 +9,7 @@ script_dir = Path(__file__).resolve().parent
 backend_dir = script_dir.parent / "backend"
 sys.path.insert(0, str(backend_dir))
 
-from app.config import settings
+from app.config import settings  # noqa: E402
 
 # Paths to CSV files
 csv_billing_data_path = script_dir / "billing_data.csv"
@@ -41,9 +41,9 @@ engine = create_engine(settings.database_url)
 
 try:
     # Import data to database (works for both SQLite and PostgreSQL)
-    df_billing_data.to_sql('billing_data', engine, if_exists='append', index=False)
-    df_pipeline_runs.to_sql('pipeline_runs', engine, if_exists='append', index=False)
-    
+    df_billing_data.to_sql("billing_data", engine, if_exists="append", index=False)
+    df_pipeline_runs.to_sql("pipeline_runs", engine, if_exists="append", index=False)
+
     print(f"Data imported successfully to {settings.database_type} database.")
     print(f"- Imported {len(df_billing_data)} billing records")
     print(f"- Imported {len(df_pipeline_runs)} pipeline run records")

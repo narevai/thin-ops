@@ -128,7 +128,7 @@ class TestOpenAIAuth:
 
         with pytest.raises(
             ValueError,
-            match="OpenAI only supports AuthMethod.BEARER_TOKEN authentication",
+            match="OpenAI only supports bearer_token authentication",
         ):
             auth.validate()
 
