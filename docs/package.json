@@ -3,7 +3,9 @@
   "version": "0.2.3",
   "description": "Documentation for Narev - FinOps Cost Explorer",
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   },
   "scripts": {
     "dev": "vitepress dev --port 5174 --host 0.0.0.0",
