@@ -140,11 +140,11 @@ def upload_directory_to_azure(
 
     # Summary
     print(f"\n{'=' * 50}")
-    print(f"Upload complete!")
+    print("Upload complete!")
     print(f"Successfully uploaded: {uploaded_count} files")
     if failed_count > 0:
         print(f"Failed: {failed_count} files")
-    print(f"\nFiles are available at:")
+    print("\nFiles are available at:")
     print(
         f"https://{storage_account}.blob.core.windows.net/{container_name}/{remote_path}"
     )
@@ -186,7 +186,7 @@ def main():
     # Use the most recent date directory
     latest_date_dir = sorted(date_dirs)[-1]
 
-    print(f"Azure Storage Upload Tool")
+    print("Azure Storage Upload Tool")
     print(f"{'=' * 50}")
     print(f"Local directory: {latest_date_dir}")
     print(f"Storage account: {STORAGE_ACCOUNT}")

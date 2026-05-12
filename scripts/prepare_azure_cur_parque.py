@@ -10,8 +10,6 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
 
 
 # ===== CONFIGURATION =====
@@ -423,7 +421,7 @@ class AzureFOCUSMockGenerator:
 def main():
     """Generate mock Azure FOCUS data"""
 
-    print(f"Generating Azure FOCUS mock data...")
+    print("Generating Azure FOCUS mock data...")
     print(f"Date range: {START_DATE} to {END_DATE}")
     print(f"Number of records: {NUM_RECORDS} (ignored if GENERATE_HOURLY_DATA=True)")
     print(f"Hourly data generation: {GENERATE_HOURLY_DATA}")

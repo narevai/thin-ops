@@ -283,11 +283,11 @@ def create_sample_cur_with_aws_structure():
     with open(parent_manifest_filename, "w", encoding="utf-8") as f:
         json.dump(manifest, f, indent=2)
 
-    print(f"\n✅ CUR structure created successfully!")
+    print("\n✅ CUR structure created successfully!")
     print(f"📁 Location: {report_base}")
     print(f"📊 Generated {len(rows)} data lines")
     print(f"📦 Created {len(report_keys)} .csv.gz files")
-    print(f"\n🚀 You can now upload files to S3 using:")
+    print("\n🚀 You can now upload files to S3 using:")
     print(
         f"   aws s3 sync {report_name}\\{billing_period}\\{assembly_id}\\ s3://{BUCKET_NAME}/{report_name}/{billing_period}/{assembly_id}/ --region {REGION}"
     )

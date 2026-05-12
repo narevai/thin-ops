@@ -9,7 +9,7 @@ script_dir = Path(__file__).resolve().parent
 backend_dir = script_dir.parent / "backend"
 sys.path.insert(0, str(backend_dir))
 
-from app.config import settings
+from app.config import settings  # noqa: E402
 
 # Paths to CSV files
 csv_billing_data_path = script_dir / "billing_data.csv"

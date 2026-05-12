@@ -1,13 +1,13 @@
 # scripts/prepare_aws_cur.py
-import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
-import random
-from datetime import datetime, timedelta
+import importlib.util
 import json
 import os
+import random
 import shutil
-import numpy as np
+import sys
+from datetime import datetime, timedelta
+
+import pandas as pd
 
 
 def create_sample_cur_with_aws_structure():
@@ -318,11 +318,11 @@ def create_sample_cur_with_aws_structure():
     with open(status_filename, "w") as f:
         f.write("READY")
 
-    print(f"\n✅ CUR structure in Parquet format created successfully!")
+    print("\n✅ CUR structure in Parquet format created successfully!")
     print(f"📁 Location: {report_base}")
     print(f"📊 Generated {len(df)} data lines")
     print(f"📦 Created {len(report_keys)} .parquet files")
-    print(f"\n🚀 You can now upload files to S3 using:")
+    print("\n🚀 You can now upload files to S3 using:")
     print(
         f"   aws s3 sync {report_name}\\{billing_period}\\{assembly_id}\\ s3://{BUCKET_NAME}/{report_name}/{billing_period}/{assembly_id}/ --region {REGION}"
     )
@@ -337,13 +337,12 @@ def create_sample_cur_with_aws_structure():
 
 
 if __name__ == "__main__":
-    # Check if we have required libraries
-    try:
-        import pandas
-        import pyarrow
-    except ImportError:
+    if (
+        importlib.util.find_spec("pandas") is None
+        or importlib.util.find_spec("pyarrow") is None
+    ):
         print("❌ Missing required libraries! Install them:")
         print("   pip install pandas pyarrow")
-        exit(1)
+        sys.exit(1)
 
     create_sample_cur_with_aws_structure()

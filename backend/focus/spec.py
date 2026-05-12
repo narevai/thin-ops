@@ -2,10 +2,10 @@
 FOCUS 1.2 Specification Constants and Enums
 """
 
-from enum import Enum
+from enum import StrEnum
 
 
-class ServiceCategory(str, Enum):
+class ServiceCategory(StrEnum):
     """FOCUS 1.2 Service Categories"""
 
     AI_AND_ML = "AI and Machine Learning"
@@ -20,7 +20,7 @@ class ServiceCategory(str, Enum):
     OTHER = "Other"
 
 
-class ChargeCategory(str, Enum):
+class ChargeCategory(StrEnum):
     """FOCUS 1.2 Charge Categories"""
 
     USAGE = "Usage"
@@ -30,20 +30,20 @@ class ChargeCategory(str, Enum):
     ADJUSTMENT = "Adjustment"
 
 
-class ChargeClass(str, Enum):
+class ChargeClass(StrEnum):
     """FOCUS 1.2 Charge Classes"""
 
     CORRECTION = "Correction"
 
 
-class CommitmentDiscountStatus(str, Enum):
+class CommitmentDiscountStatus(StrEnum):
     """FOCUS 1.2 Commitment Discount Status"""
 
     USED = "Used"
     UNUSED = "Unused"
 
 
-class ChargeFrequency(str, Enum):
+class ChargeFrequency(StrEnum):
     """FOCUS 1.2 Charge Frequency"""
 
     ONE_TIME = "One-Time"

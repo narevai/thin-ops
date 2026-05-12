@@ -6,7 +6,6 @@ Script to anonymize sensitive data in billing_data.csv
 import csv
 import hashlib
 import re
-import uuid
 from pathlib import Path
 
 
@@ -180,7 +179,7 @@ if __name__ == "__main__":
         exit(1)
 
     # Create backup
-    backup_file = script_dir / f"billing_data_backup.csv"
+    backup_file = script_dir / "billing_data_backup.csv"
     print(f"Creating backup: {backup_file}")
     import shutil
 
