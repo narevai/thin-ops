@@ -40,10 +40,5 @@
   "typescript.suggest.autoImports": true,
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.workspaceSymbols.scope": "allOpenProjects",
-  "typescript.preferences.useAliasesForRenames": false,
-  "python.defaultInterpreterPath": "./backend/.venv/bin/python",
-  "python.terminal.activateEnvironment": true,
-  "python.analysis.extraPaths": [
-    "./backend"
-  ]
+  "typescript.preferences.useAliasesForRenames": false
 }
