@@ -18,6 +18,6 @@
     "vitepress-sidebar": "^1.32.1"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=24.0.0"
   }
 }
