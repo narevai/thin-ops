@@ -1,191 +1,205 @@
-# Contributing to NarevAI
+# Contributing
 
-Thank you for your interest in contributing to NarevAI! We welcome contributions from developers, FinOps professionals, and anyone interested in improving AI cost analytics.
+We want you here. Especially if youre not a bot.
 
 ## Ways to Contribute
 
-- 🐛 **Report bugs** via [GitHub Issues](https://github.com/narevai/narev/issues)
-- 💡 **Suggest features** for better AI cost tracking
-- 📚 **Improve documentation** 
-- 🔧 **Submit code changes**
-- 🧪 **Add test coverage**
+- **Report bugs** via [GitHub Issues](https://github.com/narevai/narev/issues)
+- **Suggest features** for better AI cost tracking
+- **Improve documentation** 
+- **Submit code changes**
+- **Add test coverage**
 
-## Before You Start
+### Before You Start
 
 1. Check existing [issues](https://github.com/narevai/narev/issues) and [PRs](https://github.com/narevai/narev/pulls)
 2. Read our [Code of Conduct](CODE_OF_CONDUCT.md)
 3. For large changes, open an issue first to discuss
 
-## Contribution Process
+### Contribution Process
 
 1. **Fork** the repository
 2. **Create a branch**: `git checkout -b feature/your-feature-name`
 3. **Make your changes** (see Development Setup below)
-4. **Test your changes** using the make commands
+4. **Test your changes** using the `make` commands in `backend/` (see below)
 5. **Submit a pull request**
 
-# Development Environment Setup
+## Development Environment Setup
 
-## Prerequisites
+### Prerequisites
 
-- **VS Code** with **Dev Containers** extension
+- **VS Code** or **Cursor** with the **Dev Containers** extension
 - **Docker Desktop** running
 - Git access to the repository
 
-## Setup
+### Setup
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/narevai/narev.git
 cd narev
 ```
-2. Open in VS Code
-```bash
-bashcode .
-```
 
-3. Choose Your Development Environment
+1. **Reopen in the dev container**
+   - When prompted, choose **Reopen in Container**, or
+   - Command Palette (Cmd/Ctrl+Shift+P): **Dev Containers: Reopen in Container**
+   - This project uses a single **Narev Development** configuration (see `.devcontainer/devcontainer.json`), backed by `.devcontainer/docker-compose.yaml`.
 
-You have three options for development:
+2. **Environment file**
+   - Copy `.env.example` to `.env` if you do not have one yet.
+   - For local full-stack development, set **`VITE_API_URL=http://localhost:8000`** in `.env` (see `.env.example`). The frontend uses this in dev so API calls go to the FastAPI server; without it, the client defaults to same-origin and API requests from the Vite dev server usually fail.
 
-### Option A: Frontend Development (Recommended for React/TypeScript work)
-- VS Code will show a notification: "Reopen in Container"
-- Or use Command Palette (Cmd/Ctrl+Shift+P): **Dev Containers: Reopen in Container**
-- Select **"Narev Frontend Development"**
-- This connects to the frontend container with proper TypeScript/React support
+3. **Node dependencies (first time or after lockfile changes)**
 
-### Option B: Backend Development (Recommended for Python/API work)
-- Use Command Palette (Cmd/Ctrl+Shift+P): **Dev Containers: Reopen in Container**
-- Select **"Narev Backend Development"**
-- This connects to the backend container with proper Python/Ruff support
-
-### Option C: Full-Stack Development (Both Frontend & Backend)
-For simultaneous frontend and backend development:
-
-1. **Open first VS Code window** for frontend:
-   - Command Palette → "Dev Containers: Reopen in Container"
-   - Select **"Narev Frontend Development"**
-
-2. **Open second VS Code window** for backend:
-   - `File → New Window` or `Ctrl/Cmd + Shift + N`
-   - Open the same project folder
-   - Command Palette → "Dev Containers: Reopen in Container"
-   - Select **"Narev Backend Development"**
-
-Both windows share the same Docker Compose services, giving you:
-- ✅ One window with proper TypeScript/React IntelliSense
-- ✅ One window with proper Python/Ruff support
-- ✅ Both containers running and communicating
+   - The devcontainer **post-create** step runs `pnpm install` for `frontend` and `docs`. If that did not run or failed, install manually:
 
 ```bash
-make up    # Starts all services with docker-compose
-
-bashmake up    # Starts all services with docker-compose
+pnpm install --dir /workspace/frontend
+pnpm install --dir /workspace/docs
 ```
 
 ## Development Environment
-### What Each Container Provides
-**Frontend Container**:
 
-- ✅ Node.js 22 with pnpm
-- ✅ TypeScript/React IntelliSense
-- ✅ ESLint and Prettier
-- ✅ Vite dev server with hot reload
-- ✅ Tailwind CSS support
+### What the dev container provides
 
-**Backend Container**:
+One **dev** service includes:
 
-- ✅ Python 3.12+ with all dependencies
-- ✅ Ruff formatting and linting
-- ✅ FastAPI with auto-reload
-- ✅ PostgreSQL database access
-- ✅ Pre-configured VS Code Python extensions
-
-
+- ✅ Python 3.12 with project dependencies (installed at image build time via `uv`)
+- ✅ Node.js 20 and **pnpm** (global)
+- ✅ Workspace mounted at `/workspace`
+- ✅ Ports forwarded for Vite, docs, and the API (see `devcontainer.json`)
 
 ### URLs
-- Frontend: http://localhost:5173 (Vite dev server)
+
+- Frontend: http://localhost:5173 (Vite dev server; start with `pnpm run dev` in `frontend/`)
 - Backend API: http://localhost:8000
-- API Docs: http://localhost:8000/docs
+- API docs: http://localhost:8000/docs
+- Health check: http://localhost:8000/health
 
-### Frontend Development Notes
-The Vite dev server is configured to bind to `0.0.0.0` for Docker container compatibility. This allows the development server to be accessible from outside the container while maintaining full hot reload functionality.
+### Running backend and frontend
 
-### File Structure
+Use **two terminals** inside the dev container (the compose service stays up with `sleep infinity`; you start the app processes yourself).
+
+**Backend** (from `backend/`):
+
+```bash
+cd /workspace/backend
+make dev
+```
+
+This runs FastAPI with uvicorn and reload on port 8000. Default local database is **SQLite** under `backend/data` unless you change settings.
+
+**Frontend** (from `frontend/`):
+
+```bash
+cd /workspace/frontend
+pnpm run dev
+```
+
+### Quick smoke test (everything wired for developers)
+
+| Check | What to do |
+|--------|------------|
+| Python | `python -c "import fastapi; print('ok')"` |
+| Backend | `cd /workspace/backend && make dev`, then open `/health` and `/docs` |
+| Frontend | `cd /workspace/frontend && pnpm run dev`, open port 5173 |
+| Full stack | Backend + frontend running, `VITE_API_URL` set → confirm browser network calls hit `http://localhost:8000` |
+
+### `make up` and `make down`
+
+From **`/workspace/backend`**, `make up` and `make down` control `.devcontainer/docker-compose.yaml`. Use them when you need to (re)start or stop the Compose project from the host or from a shell **without** relying on the editor’s devcontainer attach. When you are already **inside** the rebuilt dev container, the **dev** service is usually already running; you still start **uvicorn** and **Vite** with the commands above.
+
+### Frontend development notes
+
+The Vite dev server is configured to bind to `0.0.0.0` for Docker compatibility so you can open it from the host while hot reload keeps working.
+
+### File structure
+
 ```
 /workspace/
 ├── .devcontainer/
-│   ├── backend/devcontainer.json    # Backend container config
-│   ├── frontend/devcontainer.json   # Frontend container config
-│   ├── docker-compose.yaml          # Multi-container setup
-│   ├── Dockerfile.backend           # Python environment
-│   └── Dockerfile.frontend          # Node.js environment
-├── .vscode/                         # VS Code settings
-├── backend/                         # Python/FastAPI code
-├── frontend/                        # Vite React/TypeScript code
-└── Makefile                        # Development commands
+│   ├── devcontainer.json      # Dev container definition
+│   ├── docker-compose.yaml    # dev service + volumes
+│   └── Dockerfile.dev         # Python + Node + pnpm image
+├── .vscode/                   # Editor settings
+├── backend/                   # Python/FastAPI code (includes Makefile)
+├── frontend/                  # Vite React/TypeScript code
+└── docs/                      # Documentation site
 ```
 
 ## Development Workflow
+
+Run **`make`** targets from **`/workspace/backend`** (the backend `Makefile` lives there).
+
 ### Backend
+
 ```bash
+cd /workspace/backend
+
 # Setup and dependencies
-make install-dev       # Install Python dev dependencies
+make install-dev       # Install Python dev dependencies (pip)
 
 # Code quality (uses Ruff)
 make format            # Format code with Ruff
-make fix              # Auto-fix linting issues
-make lint             # Check linting (no fixes)
-make check            # Check formatting + linting (CI-ready)
-make format-all       # Format + fix everything
+make fix               # Auto-fix linting issues
+make lint              # Check linting (no fixes)
+make check             # Check formatting + linting (CI-ready)
+make format-all        # Format + fix everything
 
 # Testing
-make test             # Run pytest
-make test-cov         # Run tests with coverage report
+make test              # Run pytest
+make test-cov          # Run tests with coverage report
 
 # Development
-make dev              # Run backend server (uvicorn)
-make up               # Start full docker-compose stack
-make down             # Stop docker-compose stack
+make dev               # Run backend server (uvicorn on port 8000)
+make up                # Start docker-compose stack (.devcontainer)
+make down              # Stop docker-compose stack
 
 # Cleanup
-make clean            # Remove coverage files, cache, etc.
+make clean             # Remove coverage files, cache, etc.
 ```
 
 ### Frontend
-### Frontend Development
+
 ```bash
-# Start the frontend dev server (inside frontend container)
-pnpm install          # Install dependencies (first time)
-pnpm run dev          # Start Vite dev server with hot reload
-pnpm run build        # Build for production
-pnpm run preview      # Preview production build locally
+cd /workspace/frontend
+
+pnpm install           # Install dependencies (first time or after clone)
+pnpm run dev           # Start Vite dev server with hot reload
+pnpm run build         # Build for production
+pnpm run preview       # Preview production build locally
 
 # Remove unused dependencies
 pnpm remove package-name
 
 # Add new dependencies
 pnpm add package-name
-pnpm add -D package-name  # Dev dependencies
+pnpm add -D package-name   # Dev dependencies
 ```
 
 ### VS Code Integration
+
 The project includes .vscode/settings.json with:
 
 - ✅ Ruff configured as formatter and linter
-- ✅ Python path set correctly for the devcontainer
+- ✅ Python interpreter: devcontainer sets `python.defaultInterpreterPath` to `/usr/local/bin/python`
 - ✅ Auto-formatting on save
 - ✅ Linting errors shown inline
 
 ### Making Changes
-1. Edit code - VS Code will auto-format and show linting errors
-2. Run the code quality check:
+
+1. Edit code — the editor will auto-format and show linting errors where configured.
+2. Run the code quality check (from `backend/`):
+
 ```bash
+cd /workspace/backend
 make format-all   # Format and fix issues
 make check        # Verify everything passes
 ```
 
-3. Test your changes:
+1. Test your changes:
+
 ```bash
 make test         # Run tests
 make test-cov     # See coverage report
@@ -216,8 +230,9 @@ test: add unit tests for billing sync
 ```
 
 ### Pull Request Guidelines
-1. Before submitting:
+1. Before submitting (from `backend/`):
 ```bash
+cd /workspace/backend
 make format-all    # Format and fix all issues
 make check         # Ensure formatting and linting pass
 make test-cov      # Run tests with coverage
@@ -231,28 +246,24 @@ Your PR should:
 - ✅ Clear description of changes
 
 ## Troubleshooting
-### Devcontainer Issues
+### Devcontainer issues
+
+- Rebuild: Command Palette → **Dev Containers: Rebuild Container**.
+
+Restart the Compose stack from **`backend/`**:
+
 ```bash
-# Rebuild the devcontainer
-# In VS Code: Cmd/Ctrl+Shift+P -> "Dev Containers: Rebuild Container"
- 
-# Or restart the stack
+cd /workspace/backend
 make down
 make up
 ```
 
-### Code Quality Issues
+### Code quality issues
+
 ```bash
-# Fix most issues automatically
-make format-all
-
-# Check what still needs fixing
-make check
+cd /workspace/backend
+make format-all    # Fix most issues automatically
+make check         # See what still needs fixing
 ```
-### Questions?
-💬 Development questions: GitHub Discussions
-🐛 Bug reports: GitHub Issues
-📧 General inquiries: opensource@narev.ai
-
 
 By contributing, you agree to abide by our [Code of Conduct](./CODE_OF_CONDUCT.md).
