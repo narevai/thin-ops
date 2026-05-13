@@ -15,6 +15,10 @@
       "groupSlug": "all-minor-patch",
       "matchPackageNames": ["*"],
       "schedule": ["before 3am on monday"]
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "enabled": false
     }
   ]
 }
