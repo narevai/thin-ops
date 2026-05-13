@@ -1,0 +1,25 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["patch"],
+      "groupName": "all patch updates",
+      "schedule": ["before 3am on monday"]
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "groupName": "all non-major updates",
+      "groupSlug": "all-minor-patch",
+      "matchPackageNames": ["*"],
+      "schedule": ["before 3am on monday"]
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "matchManagers": ["npm", "pep621", "pip_requirements", "pip_setup", "pip-compile"],
+      "enabled": false
+    }
+  ]
+}
