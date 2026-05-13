@@ -18,6 +18,7 @@
     },
     {
       "matchUpdateTypes": ["major"],
+      "matchManagers": ["npm", "pep621", "pip_requirements", "pip_setup", "pip-compile"],
       "enabled": false
     }
   ]
