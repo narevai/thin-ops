@@ -25,11 +25,7 @@ ENV PYTHONPATH=/workspace/backend \
 COPY requirements.txt requirements-dev.txt /tmp/
 
 RUN pip install uv && \
-    uv venv /opt/venv
-
-ENV PATH="/opt/venv/bin:$PATH"
-
-RUN uv pip install \
+    uv pip install --system \
     -r /tmp/requirements.txt \
     -r /tmp/requirements-dev.txt
 

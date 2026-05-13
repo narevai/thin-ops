@@ -21,7 +21,7 @@
           "ms-vscode.vscode-yaml"
         ],
         "settings": {
-          "python.defaultInterpreterPath": "/opt/venv/bin/python",
+          "python.defaultInterpreterPath": "/usr/local/bin/python",
           "python.linting.pylintEnabled": false,
           "python.linting.flake8Enabled": false,
           "python.formatting.provider": "none",
