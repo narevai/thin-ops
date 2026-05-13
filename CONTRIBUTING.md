@@ -66,7 +66,7 @@ pnpm install --dir /workspace/docs
 One **dev** service includes:
 
 - ✅ Python 3.12 with project dependencies (installed at image build time via `uv`)
-- ✅ Node.js 20 and **pnpm** (global)
+- ✅ Node.js 24 and **pnpm** (global)
 - ✅ Workspace mounted at `/workspace`
 - ✅ Ports forwarded for Vite, docs, and the API (see `devcontainer.json`)
 
