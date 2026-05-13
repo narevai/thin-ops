@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.5] - 2026-05-13
+
+### Security
+
+- Bumped `cryptography` in the backend (46.0.3 → 46.0.7) to stay on the latest patch line from the dependency graph.
+- Added pnpm overrides in `frontend/` for `seroval`, `seroval-plugins`, and `picomatch`, pinning transitive versions that were flagged in audits so the lockfile resolves to patched releases.
+
+### Changed
+
+- Consolidated the dev container setup: one `Dockerfile.dev`, a single root `devcontainer.json`, and a slimmer `docker-compose` instead of separate backend, docs, and frontend devcontainer stacks.
+- Refreshed `CONTRIBUTING.md` and `.vscode/settings.json` to match the unified dev environment.
+
+### Dependencies
+
+**`backend/`**
+
+- `cryptography` 46.0.3 → 46.0.7
+
+**`frontend/`**
+
+- pnpm overrides: `seroval` ^1.4.1, `seroval-plugins` ^1.4.1, `picomatch` ^4.0.4 (with lockfile updates; e.g. `seroval-plugins` resolves to 1.5.4)
+- Related lockfile deduplication for `picomatch` and the seroval toolchain
+
 ## [0.2.4] - 2026-05-12
 
 ### Security
