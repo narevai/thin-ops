@@ -3,12 +3,12 @@ fastapi==0.121.3
 uvicorn[standard]==0.38.0
 
 # Database
-sqlalchemy==2.0.44
+sqlalchemy==2.0.49
 
 # Data processing
 pydantic==2.12.4
 pydantic-settings==2.10.1
-pandas==2.3.1
+pandas==2.3.3
 openpyxl==3.1.5
 
 # Templates and frontend

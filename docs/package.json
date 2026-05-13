@@ -14,7 +14,7 @@
     "preview": "vitepress preview --port 5174 --host 0.0.0.0"
   },
   "devDependencies": {
-    "vitepress": "2.0.0-alpha.8",
+    "vitepress": "2.0.0-alpha.17",
     "vitepress-sidebar": "^1.32.1"
   },
   "engines": {
