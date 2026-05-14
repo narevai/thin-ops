@@ -3,20 +3,35 @@
   "extends": [
     "config:recommended"
   ],
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 5,
   "packageRules": [
     {
-      "matchUpdateTypes": ["patch"],
-      "groupName": "all patch updates",
+      "description": "NPM Manager (Frontend & Docs)",
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "npm dependencies",
+      "groupSlug": "npm-minor-patch",
       "schedule": ["before 3am on monday"]
     },
     {
-      "matchUpdateTypes": ["minor"],
-      "groupName": "all non-major updates",
-      "groupSlug": "all-minor-patch",
-      "matchPackageNames": ["*"],
+      "description": "Python Managers (Backend Requirements & pyproject.toml)",
+      "matchManagers": ["pip_requirements", "pep621"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "python dependencies",
+      "groupSlug": "python-minor-patch",
       "schedule": ["before 3am on monday"]
     },
     {
+      "description": "Docker Managers (Dockerfile & Docker Compose)",
+      "matchManagers": ["dockerfile", "docker-compose"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "docker updates",
+      "groupSlug": "docker-minor-patch",
+      "schedule": ["before 3am on monday"]
+    },
+    {
+      "description": "Keep major updates disabled as per original request",
       "matchUpdateTypes": ["major"],
       "matchManagers": ["npm", "pep621", "pip_requirements", "pip_setup", "pip-compile"],
       "enabled": false
