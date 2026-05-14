@@ -3,6 +3,8 @@
   "extends": [
     "config:recommended"
   ],
+  "fetchReleaseNotes": false,
+  "prBodyNotes": [],
   "prConcurrentLimit": 10,
   "prHourlyLimit": 5,
   "packageRules": [
