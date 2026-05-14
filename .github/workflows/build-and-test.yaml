@@ -23,9 +23,9 @@ jobs:
           node-version: "24"
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
-          version: latest
+          version: 10.23.0
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
@@ -115,9 +115,9 @@ jobs:
           node-version: "24"
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
-          version: latest
+          version: 10.23.0
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
