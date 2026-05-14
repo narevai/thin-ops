@@ -7,6 +7,11 @@
   "prHourlyLimit": 5,
   "packageRules": [
     {
+      "description": "Disable all Python language version updates",
+      "matchPackageNames": ["python"],
+      "enabled": false
+    },
+    {
       "description": "NPM Manager (Frontend & Docs)",
       "matchManagers": ["npm"],
       "matchUpdateTypes": ["minor", "patch"],
