@@ -1,6 +1,6 @@
-# `thin-ops`
+# ThinOps
 
-![thin-ops Banner](./.github/assets/banner.webp)
+![ThinOps Banner](./.github/assets/banner.webp)
 
 ## Convert any billing into FOCUS format
 
