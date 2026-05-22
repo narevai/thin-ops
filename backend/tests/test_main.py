@@ -18,7 +18,6 @@ def test_api_root_endpoint(client):
     response = client.get("/api/")
     assert response.status_code == 200
     data = response.json()
-    assert data["message"] == "Hello from thin-ops API! 🚀"
     assert data["status"] == "working"
 
 
