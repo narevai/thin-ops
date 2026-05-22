@@ -1,0 +1,85 @@
+---
+title: 'Open source FOCUS translator'
+description: "Deploy the open source Narev Self-Hosted translator to unify cloud and AI provider billing data into the FOCUS specification for FinOps reporting."
+---
+
+<Tip>
+  The team donates a portion of development time to an open source package that unifies cloud billing data into FOCUS
+  format defined by the [FinOps Foundation](https://focus.finops.org/). This work helps accelerate the adoption
+  of the FOCUS reporting across the Cloud and AI providers.
+</Tip>
+
+## What's `narevai/narev`?
+
+This project allows you to connect with cloud, AI, and SaaS vendors and unify your billing data. It helps with:
+
+- Extracting Cloud, AI and SaaS costs
+- Exporting costs in a FOCUS format
+- Providing a dashboard visualizing the spending by type
+
+---
+
+## Getting started
+
+### Demo mode
+
+If you want to explore the feature set with sample data, start with demo mode:
+
+```bash
+docker run -d \
+  --name narev-billing-demo \
+  -p 8000:8000 \
+  -v $(pwd)/data:/app/data \
+  -e DEMO="true" \
+  ghcr.io/narevai/narev:latest
+```
+
+`narevai/narev` runs at `http://localhost:8000`
+
+**Demo mode includes:**
+
+- Sample billing data from AWS, Azure, and GCP
+- Realistic usage patterns and cost data
+- Pipeline run history
+- **No encryption key needed!** Demo mode automatically generates one for you.
+
+### Production Setup
+
+For production, you will need to generate your own encryption key:
+
+#### 1. Generate the encryption key
+
+```bash
+python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+```
+
+#### 2. Run the container with the generated key:
+
+```bash
+docker run -d \
+  --name narev-billing \
+  -p 8000:8000 \
+  -v $(pwd)/data:/app/data \
+  -e ENCRYPTION_KEY="gAAAAABhZ_your_actual_generated_key_here" \
+  -e ENVIRONMENT="production" \
+  ghcr.io/narevai/narev:latest
+```
+
+#### 3. Connect your providers
+
+Now that the Docker is running, add your cloud providers:
+**[Connect providers Guide](/narev-oss/connect-providers)**
+
+#### 4. Import billing data
+
+Sync your historical cost data:
+**[Sync providers Guide](/narev-oss/getting-started/sync-providers)**
+
+#### 5. Advanced Deployment
+
+For production environments see advanced configuration: [Deployment Guide](/narev-oss/getting-started/deployment)
+
+## Need Help?
+
+Get community support and ask questions:
+**[GitHub Discussions](https://github.com/narevai/narev/discussions)**

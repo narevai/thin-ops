@@ -1,21 +1,17 @@
 ---
-title: "Open AI"
+title: 'OpenAI'
 outline: deep
+description: "Use an OpenAI administrator API key to pull usage and billing data into Narev Self-Hosted and unify it with cloud spend in FOCUS format."
 ---
-
-# OpenAI Provider
-
-The OpenAI provider allows you to collect billing and usage data
-from the OpenAI platform for analysis in NarevAI.
 
 ## Prerequisites
 
 - Active OpenAI account with API access
 - Administrator permissions in your OpenAI organization
-- Admin API key with billing access permissions
+- Administrator API key with billing access permissions
 - Optionally: Organization ID (for accounts with multiple organizations)
 
-## Creating an Admin API Key
+## Creating an administrator API key
 
 ### 1. Access OpenAI Platform
 
@@ -23,26 +19,25 @@ from the OpenAI platform for analysis in NarevAI.
 2. Sign in to your OpenAI account
 3. Ensure you have administrator permissions in your organization
 
-### 2. Generate Admin API Key
+### 2. Generate administrator API key
 
 1. In the left sidebar, select **API keys**
 2. Click **Create new secret key**
 3. In the key creation form:
-   - **Name**: Provide a descriptive name (e.g., "NarevAI Billing Access")
+   - **Name**: Provide a descriptive name (for example, "NarevAI Billing Access")
    - **Permissions**: Select **All** or **Custom** with permissions for:
      - `organization.billing.read`
      - `organization.usage.read`
    - **Project**: Choose the appropriate project or leave as "All projects"
 
-::: warning Admin Key Requirements
-Keys with access to billing data have the format `sk-admin-*` or `sk-*` with
-extended permissions. Regular `sk-*` keys without administrator permissions
-will not work for billing data access.
-:::
+<Warning>
+  **Admin key requirements**: keys with billing access use the format `sk-*` with extended
+  permissions. Regular `sk-*` keys without administrator permissions won't work for billing data access.
+</Warning>
 
-### 3. Copy the Key
+### 3. Copy the key
 
-1. Copy the key immediately - it will only be shown once
+1. Copy the key immediately because the platform shows it only once
 2. Save it in a secure location
 3. The key should have the format: `sk-admin-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
 
@@ -53,42 +48,51 @@ will not work for billing data access.
 1. In the NarevAI sidebar, under **Data Connections**, click **Connect**
 2. You'll see the "Provider Integrations" page with available providers
 
-![NarevAI Connections](../assets/screenshots/narevai-connections.png)
+<Frame>
+<img src="/images/narev-oss/screenshots/narevai-connections.png" alt="NarevAI Connections" />
+</Frame>
 
 ### Step 2: Select OpenAI Provider
 
 1. Find the **OpenAI** card in the provider grid
 2. Click the **Connect** button on the OpenAI card
-3. The OpenAI configuration dialog will open
+3. The OpenAI configuration dialog opens
 
-![NarevAI OpenAI Provider Dialog](../assets/screenshots/narevai-openai-provider-dialog.png)
+<Frame>
+<img src="/images/narev-oss/screenshots/narevai-openai-provider-dialog.png" alt="NarevAI OpenAI Provider Dialog" />
+</Frame>
 
 ### Step 3: Configure OpenAI Provider
 
-#### Narev Configuration
+#### Narev configuration
 
-**Provider Name** ✅ *Required*
-- Unique identifier (e.g., `openai-main`, `company-openai`)
+**Provider Name** ✅ _Required_
+
+- Unique identifier (for example, `openai-main`, `company-openai`)
 - Format: lowercase letters, numbers, hyphens, underscores only
 
 **Display Name** (Optional)
-- Human-readable name (e.g., `Main OpenAI Account`, `Company OpenAI`)
+
+- Human-readable name (for example, `Main OpenAI Account`, `Company OpenAI`)
 - Shown in the interface
 
-#### App Configuration - OpenAI Credentials ✅ *Required*
+#### App configuration - OpenAI credentials ✅ _Required_
 
 **Token** ✅
-- Your OpenAI admin API key (format: `sk-admin-xxxxxxxxxxxxxxxxxxxxxxxx`)
+
+- Your OpenAI administrator API key (format: `sk-admin-xxxxxxxxxxxxxxxxxxxxxxxx`)
 - Password field with show/hide toggle
 
-#### Provider-Specific Configuration
+#### Provider-specific configuration
 
 **API Endpoint** (Optional)
+
 - Custom API endpoint (default: `https://api.openai.com/v1`)
 - Use only for custom deployments or proxies
 - **Important**: Proxy must provide usage data in OpenAI-compatible format
 
 **Organization ID** (Optional)
+
 - OpenAI organization identifier (format: `org-XXXXXXXXXXXXXXXXXX`)
 - Leave empty to use your default organization
 
@@ -96,18 +100,19 @@ will not work for billing data access.
 
 1. Review all configuration settings
 2. Click the **Connect** button
-3. NarevAI will test the connection to OpenAI API
-4. If successful, the provider will be added and appear as "Connected"
+3. NarevAI tests the connection to OpenAI API
+4. If successful, NarevAI adds the provider and marks it as "Connected"
 5. You can now sync billing data from this OpenAI account
 
 **Connection Test includes:**
+
 - API key validity check
 - Billing endpoints access verification
 - Organization permissions verification (if specified)
 
-## Configuration Examples
+## Configuration examples
 
-### Basic Setup
+### Basic setup
 
 ```text
 Provider Name: openai-main
@@ -136,6 +141,7 @@ API Endpoint: https://api-proxy.company.com/openai/v1
 ### Common Test Results
 
 #### Success Response
+
 ```text
 Successfully connected to OpenAI API
 Endpoint: https://api.openai.com/v1
@@ -143,15 +149,19 @@ Organization: org-ABC123DEF456GHI789
 ```
 
 #### Authentication Failed
+
 ```text
 Authentication failed - please check your API key
 ```
-**Solution**: Verify your API key is correct and has admin permissions
+
+**Solution**: Verify your API key is correct and has administrator permissions
 
 #### Connection Failed
+
 ```text
 Connection failed with status 403
 ```
+
 **Solution**: Ensure your API key has billing access permissions
 
 ## Supported Features
@@ -168,8 +178,8 @@ The OpenAI provider supports:
 
 ### Invalid API Key Format
 
-- Ensure your key starts with `sk-admin-` or has admin permissions
-- Regular `sk-` keys without billing access will not work
+- Ensure your key starts with `sk-admin-` or has administrator permissions
+- Regular `sk-` keys without billing access do not work
 
 ### Organization Access Issues
 
@@ -198,5 +208,5 @@ Once configured, the OpenAI provider will collect:
 - Organization data: Multi-organization billing breakdown
 - Time-series data: Daily aggregated metrics
 
-Data collection runs automatically based on your configured schedule and will
-appear in the NarevAI dashboard after the first successful sync.
+Data collection runs automatically based on your configured schedule and appears
+in the NarevAI dashboard after the first successful sync.

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "docs",
+  "colors": {
+    "primary": "#16A34A",
+    "light": "#07C983",
+    "dark": "#15803D"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Open Source",
+        "groups":[
+          {
+            "group": "narevai/thin-ops",
+            "icon": "docker",
+            "pages": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "oss/thinops/index"
+                ]
+              },
+              {
+                "group": "Getting Started",
+                "pages": [
+                  "oss/thinops/getting-started/deployment",
+                  "oss/thinops/getting-started/sync-providers",
+                  "oss/thinops/focus-specification"
+                ]
+              },
+              {
+                "group": "Connect Providers",
+                "pages": [
+                  "oss/thinops/connect-providers/index",
+                  "oss/thinops/connect-providers/aws",
+                  "oss/thinops/connect-providers/azure",
+                  "oss/thinops/connect-providers/gcp",
+                  "oss/thinops/connect-providers/openai"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Github",
+          "href": "https://github.com/narevai/thin-ops",
+          "icon": "github"
+        }
+      ]
+    }
+  },
+  "navbar": {},
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/narevai/thin-ops"
+    }
+  }
+}

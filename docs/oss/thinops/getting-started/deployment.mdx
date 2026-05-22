@@ -1,6 +1,7 @@
 ---
-title: "Getting Started"
+title: 'Deploy with Docker'
 order: 3
+description: "Step-by-step deployment guide for running Narev Self-Hosted in production with Docker, including environment configuration and security settings."
 ---
 
 # Deployment Guide
@@ -14,7 +15,7 @@ using the official Docker image.
 - Docker Compose (recommended for easier management)
 - A database (SQLite - currently the only supported database)
 
-## Quick Start
+## Quick start
 
 The simplest way to get started is using Docker with SQLite.
 
@@ -196,7 +197,7 @@ This **MUST** be changed from the default value in production:
 - **Purpose**: Populates database with sample billing data and pipeline runs on startup for demonstration purposes
 - **Options**: `true`, `false`
 - **Default**: `false`
-- **When to use**: 
+- **When to use**:
   - Testing the application with realistic data
   - Demonstrations and presentations
   - Development when you need sample data
@@ -209,21 +210,21 @@ This **MUST** be changed from the default value in production:
 Create a `docker-compose.yml` file:
 
 ```yaml
-version: "3.8"
+version: '3.8'
 
 services:
   app:
     image: ghcr.io/narevai/narev:latest
     container_name: narev-billing
     ports:
-      - "8000:8000"
+      - '8000:8000'
     environment:
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
       ENVIRONMENT: production
       DATABASE_TYPE: sqlite
       SQLITE_PATH: /data/billing.db
       VITE_API_URL: https://billing.yourdomain.com
-      VITE_APP_NAME: "Company Billing Analyzer"
+      VITE_APP_NAME: 'Company Billing Analyzer'
       LOG_LEVEL: INFO
       LOG_TO_FILE: true
       CORS_ORIGINS: '["https://billing.yourdomain.com"]'
@@ -232,9 +233,9 @@ services:
       - billing_data:/data
       - billing_logs:/app/logs
     restart: unless-stopped
-    
+
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:8000/health']
       interval: 30s
       timeout: 10s
       retries: 3
