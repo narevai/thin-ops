@@ -101,7 +101,7 @@ jobs:
           exit $TEST_RESULT
 
   docs:
-    name: Documentation Test
+    name: Documentation Build and Test
     runs-on: ubuntu-latest
     defaults:
       run:
