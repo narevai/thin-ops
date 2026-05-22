@@ -2,8 +2,8 @@ import { defineConfig } from "vitepress";
 
 const vitePressConfigs = {
   srcDir: "src",
-  title: "Narev AI Documentation",
-  description: "Open source AI platform documentation",
+  title: "thin-ops AI Documentation",
+  description: "Open source FinOps platform documentation",
   base: "/docs/",
 
   sitemap: {
@@ -52,11 +52,11 @@ const vitePressConfigs = {
       },
     ],
 
-    socialLinks: [{ icon: "github", link: "https://github.com/narevai/narev" }],
+    socialLinks: [{ icon: "github", link: "https://github.com/narevai/thin-ops" }],
 
     editLink: {
       pattern:
-        "https://github.com/narevai/narev/issues/new?title=Documentation%20feedback:%20:path&body=**Page:**%20https://narev.ai/:path%0A%0A**Feedback:**%0A%0A<!-- Please describe your feedback about this documentation page -->",
+        "https://github.com/narevai/thin-ops/issues/new?title=Documentation%20feedback:%20:path&body=**Page:**%20https://narev.ai/:path%0A%0A**Feedback:**%0A%0A<!-- Please describe your feedback about this documentation page -->",
       text: "❓ Something unclear?",
     },
   },

@@ -1,7 +1,7 @@
 {
-  "name": "narev-docs",
+  "name": "thin-ops-docs",
   "version": "0.2.7",
-  "description": "Documentation for Narev - FinOps Cost Explorer",
+  "description": "Documentation for thin-ops - selfhosted FinOps platform",
   "packageManager": "pnpm@10.33.4",
   "pnpm": {
     "onlyBuiltDependencies": [

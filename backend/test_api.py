@@ -1,8 +1,3 @@
-"""
-Manual API Testing Script for NarevAI Backend
-Runs curl commands to test all main endpoints and validates responses.
-"""
-
 import json
 import subprocess
 import sys
@@ -494,7 +489,7 @@ def main():
     """Main function."""
     import argparse
 
-    parser = argparse.ArgumentParser(description="Test NarevAI API endpoints")
+    parser = argparse.ArgumentParser(description="Test ThinOps API endpoints")
     parser.add_argument(
         "--url",
         default="http://localhost:8000",
@@ -513,7 +508,7 @@ def main():
     # Handle quiet vs verbose flags
     verbose = args.verbose and not args.quiet
 
-    print("🧪 NarevAI API Test Suite")
+    print("ThinOps API Test Suite")
     print(f"🌐 Testing API at: {args.url}")
     if verbose or not args.quiet:
         print(f"📅 Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")

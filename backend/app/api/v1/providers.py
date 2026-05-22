@@ -1,7 +1,3 @@
-"""
-NarevAI Billing Analyzer - Providers API v1
-"""
-
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status

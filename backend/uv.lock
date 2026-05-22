@@ -30,7 +30,7 @@ wheels = [
 ]
 
 [[package]]
-name = "narev-api"
+name = "thin-ops-api"
 version = "0.2.7"
 source = { editable = "." }
 dependencies = [

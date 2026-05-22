@@ -1,6 +1,3 @@
--- NarevAI Billing Analyzer - Database Schema
--- FOCUS 1.2 Compliant Schema
-
 -- Enable UUID extension for PostgreSQL
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 

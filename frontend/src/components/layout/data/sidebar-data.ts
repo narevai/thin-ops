@@ -50,7 +50,7 @@ export const sidebarData: SidebarData = {
         },
         {
           title: 'Documentation',
-          url: 'https://www.narev.ai/docs/',
+          url: 'https://www.narev.ai/docs',
           icon: IconHelp,
         },
       ],
