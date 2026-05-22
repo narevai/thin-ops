@@ -3,6 +3,7 @@
   "version": "0.3.0",
   "description": "Documentation for ThinOps - selfhosted FinOps platform",
   "scripts": {
-    "dev": "npx mintlify@4.2.510 dev"
+    "dev": "npx mintlify@4.2.510 dev",
+    "test": "npx mintlify@4.2.510 broken-links"
   }
 }
