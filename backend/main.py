@@ -1,7 +1,3 @@
-"""
-NarevAI Billing Analyzer - Main FastAPI Application
-"""
-
 import logging
 import os
 import subprocess
@@ -88,7 +84,7 @@ def create_app() -> FastAPI:
 
     @api.get("/api/")
     async def api_root():
-        return {"message": "Hello from NarevAI API! 🚀", "status": "working"}
+        return {"message": "thin-ops API", "status": "working"}
 
     @api.get("/api/test")
     async def test_endpoint():

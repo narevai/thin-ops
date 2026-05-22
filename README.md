@@ -1,32 +1,25 @@
-# Narev
+# ThinOps
 
-![Narev Banner](./.github/assets/banner.webp)
+![ThinOps Banner](./.github/assets/banner.webp)
 
 ## Convert any billing into FOCUS format
 
-[![GitHub last commit](https://img.shields.io/github/last-commit/narevai/narev)](https://github.com/narevai/narev/commits)
-[![Latest tag](https://img.shields.io/github/v/tag/narevai/narev?label=latest)](https://github.com/narevai/narev/tags)
-[![Code Size](https://img.shields.io/github/languages/code-size/narevai/narev)](https://github.com/narevai/narev)
+[![GitHub last commit](https://img.shields.io/github/last-commit/narevai/thin-ops)](https://github.com/narevai/thin-ops/commits)
+[![Latest tag](https://img.shields.io/github/v/tag/narevai/thin-ops?label=latest)](https://github.com/narevai/thin-ops/tags)
+[![Code Size](https://img.shields.io/github/languages/code-size/narevai/thin-ops)](https://github.com/narevai/thin-ops)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
-Narev is an open source, self-hosted FinOps platform. It allows translating SaaS data into a FOCUS 1.2 format, and exporting it.
+**thin-ops** is a self-hosted FinOps platform. It is built for tracking infrastructure spend and unifying it into a FOCUS format.
 
-**Sources we support**:
+![Narev Dashboard](./.github/assets/screenshot.png)
+
+**Cloud platforms we support**:
 
 - AWS
 - Azure
 - GCP
 - OpenAI
 
-**Exports we support**:
-
-- Snowflake
-- CSV
-- Excel
-
-We ship with lightweight FOCUS-compliant analytics.
-
-![Narev Dashboard](./.github/assets/screenshot.png)
 
 ## Quick Start
 
@@ -34,11 +27,11 @@ We ship with lightweight FOCUS-compliant analytics.
 
 ```bash
 docker run -d \
-  --name narev \
+  --name thin-ops \
   -p 8000:8000 \
   -v $(pwd)/data:/app/data \
   -e DEMO="true" \
-  ghcr.io/narevai/narev:latest
+  ghcr.io/narevai/thin-ops:latest
 ```
 
 Then open <http://localhost:8000>.
@@ -56,12 +49,12 @@ Then run the container with your generated key:
 
 ```bash
 docker run -d \
-  --name narev-prod \
+  --name thin-ops \
   -p 8000:8000 \
   -v $(pwd)/data:/app/data \
   -e ENCRYPTION_KEY="replace-with-your-generated-fernet-key" \
   -e ENVIRONMENT="production" \
-  ghcr.io/narevai/narev:latest
+  ghcr.io/narevai/thin-ops:latest
 ```
 
 Then open <http://localhost:8000>.
@@ -73,8 +66,8 @@ For a self-hosted install, you can also use Docker Compose:
 ```yaml
 services:
   narev:
-    image: ghcr.io/narevai/narev:latest
-    container_name: narev
+    image: ghcr.io/narevai/thin-ops:latest
+    container_name: thin-ops
     ports:
       - "8000:8000"
     volumes:
@@ -95,9 +88,9 @@ Then open <http://localhost:8000>.
 
 ### Security
 
-Narev does not include built-in authentication yet. For production use, run it behind a reverse proxy, VPN, SSO/auth proxy, or another trusted access layer. Avoid exposing the container directly to the public internet.
+Thin-ops does not include built-in authentication yet. For production use, run it behind a reverse proxy, VPN, SSO/auth proxy, or another trusted access layer. Avoid exposing the container directly to the public internet.
 
-- Full production setup in the [Deployment Guide](https://www.narev.ai/docs/opensource/getting-started/deployment).
+- Full production setup in the [Deployment Guide](https://www.narev.ai/docs/narev-oss/getting-started/deployment).
 
 ## License
 

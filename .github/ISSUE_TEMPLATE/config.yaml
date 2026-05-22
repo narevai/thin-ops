@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Discussions
-    url: https://github.com/narevai/narev/discussions
+    url: https://github.com/narevai/thin-ops/discussions
     about: Ask questions and discuss ideas here
   - name: Documentation
-    url: https://github.com/narevai/narev#readme
+    url: https://github.com/narevai/thin-ops#readme
     about: Check the docs before reporting issues

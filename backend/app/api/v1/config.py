@@ -1,7 +1,3 @@
-"""
-NarevAI Billing Analyzer - Config API v1
-"""
-
 from fastapi import APIRouter
 
 from app.config import get_settings

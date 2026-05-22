@@ -1,6 +1,3 @@
--- NarevAI Billing Analyzer - SQLite Database Schema
--- FOCUS 1.2 Compliant Schema
-
 -- Providers table
 CREATE TABLE IF NOT EXISTS providers (
     id TEXT PRIMARY KEY,

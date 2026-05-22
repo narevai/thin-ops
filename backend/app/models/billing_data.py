@@ -1,7 +1,3 @@
-"""
-NarevAI Billing Analyzer - FOCUS 1.2 compliant Billing Data Model
-"""
-
 from uuid import uuid4
 
 from sqlalchemy import (

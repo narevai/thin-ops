@@ -1,7 +1,3 @@
-"""
-NarevAI Billing Analyzer - Pipeline Run Model
-"""
-
 from uuid import uuid4
 
 from sqlalchemy import JSON, Column, DateTime, ForeignKey, Index, Integer, String, Text

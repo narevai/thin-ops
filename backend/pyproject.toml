@@ -3,9 +3,9 @@ requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "narev-api"
+name = "thin-ops-api"
 version = "0.2.7"
-description = "NarevAI - FOCUS billing data analyzer"
+description = "thin-ops - selfhosted FinOps platform"
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "pydantic>=2.11.7",
