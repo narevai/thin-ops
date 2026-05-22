@@ -101,7 +101,7 @@ jobs:
           exit $TEST_RESULT
 
   docs:
-    name: Documentation Build and Test
+    name: Documentation broken links
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -114,13 +114,8 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
-        with:
-          version: 10.33.4
+      - name: Install Mintlify CLI
+        run: npm install -g mint
 
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build Documentation
-        run: pnpm run build
+      - name: Check for broken links
+        run: mint broken-links
