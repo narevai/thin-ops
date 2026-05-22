@@ -1,12 +1,8 @@
 ---
-title: "Azure"
+title: 'Microsoft Azure'
 outline: deep
+description: "Configure Azure Cost Management exports to Blob Storage, grant the service principal access, and sync Azure usage into Narev Self-Hosted."
 ---
-
-# Azure Provider
-
-The Azure provider allows you to collect billing and cost management data from
-Microsoft Azure using billing exports stored in Azure Storage for analysis in NarevAI.
 
 ## Prerequisites
 
@@ -15,26 +11,28 @@ Microsoft Azure using billing exports stored in Azure Storage for analysis in Na
 - Billing export configured and running
 - Storage account access key or appropriate permissions
 
-## Setting Up Azure Billing Export
+## Setting up Azure billing export
 
-### 1. Create Storage Account
+### 1. Create storage account
 
 1. Sign in to the Azure Portal
 2. Navigate to **Storage accounts**
 3. Click **Create** to create a new storage account
 
-![Azure Storage Accounts](../assets/screenshots/azure-storage-accounts.png)
+<Frame>
+<img src="/images/oss/thin-ops/screenshots/azure-storage-accounts.png" alt="Azure Storage Accounts" />
+</Frame>
 
 4. Configure the storage account:
    - Subscription: Select your billing subscription
    - Resource group: Create new or select existing
-   - Storage account name: Choose a unique name (e.g., `mybillingstorage`)
+   - Storage username: Choose a unique name (for example, `mybillingstorage`)
    - Region: Select appropriate region
    - Performance: **Standard** (sufficient for billing data)
-   - Replication: **LRS** (Locally redundant storage) or as needed
+   - Replication: **LRS (Locally redundant storage)** or as needed
 5. Click **Review + create** and then **Create**
 
-### 2. Create Container for Exports
+### 2. Create container for exports
 
 1. Navigate to your newly created storage account
 2. Go to **Data storage** > **Containers**
@@ -44,7 +42,7 @@ Microsoft Azure using billing exports stored in Azure Storage for analysis in Na
    - Public access level: **Private** (recommended for security)
 5. Click **Create**
 
-### 3. Set Up Cost Management Export
+### 3. Set up cost management export
 
 1. Navigate to **Cost Management + Billing**
 2. Select your billing scope (subscription, resource group, etc.)
@@ -53,58 +51,64 @@ Microsoft Azure using billing exports stored in Azure Storage for analysis in Na
 
 #### Step 1: Basics
 
-![Azure Export Template Selection](../assets/screenshots/azure-export-template.png)
+<Frame>
+<img src="/images/oss/thin-ops/screenshots/azure-export-template.png" alt="Azure Export Template Selection" />
+</Frame>
 
 5. **Select Export Template**: Choose **Cost and usage (FOCUS)** template
    - This exports data in FOCUS 1.0 format, which NarevAI maps to FOCUS 1.2
    - Avoid other templates as they may not be fully supported
 
 #### Step 2: Datasets
+
 7. **Specify export prefix** (required to ensure unique export names)
-   - Enter a prefix for all exports (e.g., `billing`, `focus`, `narev`)
+   - Enter a prefix for all exports (for example, `billing`, `focus`, `narev`)
    - This ensures that exports have unique names
 
-![Azure Export Destination](../assets/screenshots/azure-export-destination.png)
+<Frame>
+<img src="/images/oss/thin-ops/screenshots/azure-export-destination.png" alt="Azure Export Destination" />
+</Frame>
 
 #### Step 3: Destination
+
 8. Configure storage destination:
    - Storage type: **Azure blob storage**
    - Destination: **Use existing** (select your storage account)
    - Subscription: Select your subscription
    - Storage account: Select the storage account you created
    - Container: Enter the container name you created
-   - Directory: Optional subdirectory (e.g., `exports/daily`)
+   - Directory: Optional subdirectory (for example, `exports/daily`)
    - Format: **Parquet** (recommended) or **CSV**
-   - Compression: **Snappy** (for Parquet) or **Gzip** (for CSV)
+   - Compression: **Snappy** (for Parquet) or **GZIP** (for CSV)
    - Overwrite data: ✅ **Checked** (recommended to save storage costs)
 
+#### Step 4: Review + create
 
-#### Step 4: Review + Create
 9. Review your configuration and click **Create**
 
-### 4. Note Your Configuration
+### 4. Note your configuration
 
 After setup, note these details for NarevAI configuration:
 
-- Storage account name: The name of your storage account
+- Storage username: The name of your storage account
 - Container name: The container where exports are stored
 - Export path: Any subdirectory path (if configured)
 
-## Storage Account Access Setup
+## Storage account access setup
 
-### Getting Storage Account Key
+### Getting storage account key
 
-1. Go to your storage account in the Azure Portal
-2. Navigate to **Security + networking** > **Access keys**
-3. Under **key1** or **key2**, click **Show** next to the key
-4. Copy the entire key value (long string starting with letters/numbers)
-5. Store it securely - this will be used for authentication
+1. Go to your storage account (**Storage Center** -> Sidebar: **Object Storage** -> Sidebar: **Blob Storage**)
+2. Open your storage account from the table
+3. Navigate to Sidebar: **Security + networking** > **Access keys**
+4. Under **key1** or **key2**, click **Show** next to the key
+5. Copy the entire key value (long alphanumeric string)
+6. Store it securely because NarevAI uses it for authentication
 
-::: warning Storage Key Security
-Storage account keys provide full access to your storage account.
-Store them securely and rotate them regularly.
-Consider using more restrictive authentication methods for production environments.
-:::
+<Warning>
+  **Storage key security**: storage account keys provide full access to your storage account. Store them securely and
+  rotate them regularly. Consider using more restrictive authentication methods for production environments.
+</Warning>
 
 ## Adding Azure Provider in NarevAI
 
@@ -113,66 +117,77 @@ Consider using more restrictive authentication methods for production environmen
 1. In the NarevAI sidebar, under **Data Connections**, click **Connect**
 2. You'll see the "Provider Integrations" page with available providers
 
-![NarevAI Connections](../assets/screenshots/narevai-connections.png)
+<Frame>
+<img src="/images/oss/thin-ops/screenshots/narevai-connections.png" alt="NarevAI Connections" />
+</Frame>
 
 ### Step 2: Select Azure Provider
 
 1. Find the **Microsoft Azure** card in the provider grid
 2. Click the **Connect** button on the Azure card
-3. The Azure configuration dialog will open
+3. The Azure configuration dialog opens
 
-![NarevAI Azure Provider Dialog](../assets/screenshots/narevai-azure-provider-dialog.png)
+<Frame>
+<img src="/images/oss/thin-ops/screenshots/narevai-azure-provider-dialog.png" alt="NarevAI Azure Provider Dialog" />
+</Frame>
 
 ### Step 3: Configure Azure Provider
 
-#### Narev Configuration
+#### Narev configuration
 
-**Provider Name** ✅ *Required*
-- Unique identifier (e.g., `azure-prod`, `company-azure`)
+**Provider Name** ✅ _Required_
+
+- Unique identifier (for example, `azure-prod`, `company-azure`)
 - Format: lowercase letters, numbers, hyphens, underscores only
 
 **Display Name** (Optional)
-- Human-readable name (e.g., `Azure Production`, `Company Azure`)
+
+- Human-readable name (for example, `Azure Production`, `Company Azure`)
 - Shown in the interface
 
-#### App Configuration - Azure Credentials ✅ *Required*
+#### App configuration - Azure credentials ✅ _Required_
 
 **Storage Account Key** ✅
+
 - Your Azure Storage account access key (long alphanumeric string)
 - Password field with show/hide toggle
 - Found in Azure Portal > Storage Account > Access Keys
 
-#### Provider-Specific Configuration
+#### Provider-specific configuration
 
-**Storage Account** ✅ *Required*
-- Storage account name with exports (e.g., `mybillingstorage`)
+**Storage Account** ✅ _Required_
+
+- Storage username with exports (for example, `mybillingstorage`)
 - Must match the storage account you configured in Azure
 
-**Container Name** ✅ *Required*
-- Container with billing exports (e.g., `billing-exports`)
+**Container Name** ✅ _Required_
+
+- Container with billing exports (for example, `billing-exports`)
 - Must match the container you created in Azure
 
 **Export Path** (Optional)
-- Path prefix for export files (e.g., `exports/daily`)
+
+- Path prefix for export files (for example, `exports/daily`)
 - Leave empty if exports are in root of container
 
 ### Step 4: Connect Provider
 
 1. Review all configuration settings
 2. Click the **Connect** button
-3. NarevAI will test the connection to your Azure Storage
-4. If successful, the provider will be added and appear as "Connected"
+3. NarevAI tests the connection to your Azure Storage
+4. If successful, NarevAI adds the provider and marks it as "Connected"
 5. You can now sync billing data from this Azure account
 
 **Connection Test includes:**
+
 - Storage account access verification
 - Container access check
 - Export files detection
 - Permissions verification
 
-## Configuration Examples
+## Configuration examples
 
-### Basic Setup
+### Basic setup
 
 ```text
 Provider Name: azure-main
@@ -309,6 +324,6 @@ Once configured, the Azure provider will collect:
 - Tags and metadata: Custom tags for cost allocation and analysis
 - Time-series data: Daily cost and usage patterns
 
-Data collection runs automatically based on your configured schedule and will
-appear in the NarevAI dashboard after the first successful sync.
+Data collection runs automatically based on your configured schedule and appears
+in the NarevAI dashboard after the first successful sync.
 Azure billing data is typically updated daily as exports are generated.

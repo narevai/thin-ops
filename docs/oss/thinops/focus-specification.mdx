@@ -1,0 +1,174 @@
+---
+title: 'FOCUS Specification'
+description: "Reference for the FOCUS 1.2 fields, categories, and dimensions that Narev Self-Hosted uses to normalize cloud and AI provider billing data."
+---
+
+The **FinOps Open Cost and Usage Specification (FOCUS)** is an open specification that defines a consistent format for cloud cost and usage datasets. `narevai/narev` translates billing data to FOCUS 1.2, allowing standardized billing data across all cloud providers.
+
+## Why FOCUS?
+
+FOCUS creates a common language for cloud costs across all cloud providers, vendors, and tools. It eliminates the need for FinOps practitioners to spend time figuring out what different cost fields mean across different provider invoices.
+
+### Key benefits
+
+- **Standardized terminology**: Common definitions across all providers
+- **Reduced data normalization**: Less time spent on data preparation
+- **Multi-vendor support**: Single schema for all cloud providers
+- **Invoice reconciliation**: Direct links to provider invoices
+- **Virtual currency support**: Credits and tokens tracking
+
+## FOCUS 1.2 Features
+
+### Enhanced provider support
+
+- **SaaS and PaaS billing**: Expanded beyond traditional cloud providers
+- **Multi-currency support**: Convert between national currencies
+- **Virtual currencies**: Track credits, tokens, and other virtual currencies
+
+### Invoice Integration
+
+- **Invoice reconciliation**: Direct linkage to provider invoices
+- **Billing account granularity**: Enhanced account and sub-account details
+- **Charge-back optimization**: Streamlined cost allocation
+
+## Field categories
+
+FOCUS 1.2 defines fields in four categories:
+
+### Mandatory fields
+
+These fields must be present in every FOCUS-compliant dataset:
+
+#### Cost fields
+
+- **BilledCost**: Cost as shown on the invoice
+- **EffectiveCost**: Amortized cost after applying discounts and commitments
+- **ListCost**: Cost at public list prices without any discounts
+- **ContractedCost**: Cost at negotiated contract prices
+
+#### Account Identification
+
+- **BillingAccountId**: Account that receives the invoice
+- **BillingAccountName**: Display name of the billing account
+- **BillingAccountType**: Type of billing account (for example, individual, enterprise)
+
+#### Time periods
+
+- **BillingPeriodStart**: Start of the billing period (inclusive)
+- **BillingPeriodEnd**: End of the billing period (exclusive)
+- **ChargePeriodStart**: Start of the charge period (inclusive)
+- **ChargePeriodEnd**: End of the charge period (exclusive)
+
+#### Services and Providers
+
+- **ServiceName**: Name of the service that generated the charge
+- **ServiceCategory**: Standardized service category (Compute, Storage, etc.)
+- **ProviderName**: Entity that provided the resources
+- **PublisherName**: Entity that produced the resources
+- **InvoiceIssuerName**: Entity responsible for invoicing
+
+#### Charges and pricing
+
+- **ChargeCategory**: Type of charge (Usage, Purchase, Tax, Credit, Adjustment)
+- **ChargeDescription**: Human-readable description of the charge
+- **PricingQuantity**: Quantity used for pricing calculations
+- **PricingUnit**: Unit of measurement for pricing
+
+#### Currency
+
+- **BillingCurrency**: Currency code for the billed amount
+
+### Conditional fields
+
+These fields are required when certain conditions are met:
+
+#### Sub-account information
+
+- **SubAccountId**: Required when sub-accounts exist
+- **SubAccountName**: Display name when SubAccountId is present
+- **SubAccountType**: Type when SubAccountId is present
+
+#### Resource details
+
+- **ResourceId**: Required for resource-based billing
+- **ResourceName**: Display name when ResourceId is present
+- **ResourceType**: Type when ResourceId is present
+
+#### Location Information
+
+- **RegionId**: Required for region-specific charges
+- **RegionName**: Display name when RegionId is present
+- **AvailabilityZone**: Required for AZ-specific charges
+
+#### Product and pricing details
+
+- **SkuId**: Required for SKU-based pricing
+- **SkuPriceId**: Price identifier when SKU pricing exists
+- **ListUnitPrice**: Unit price when available
+- **ContractedUnitPrice**: Negotiated unit price when applicable
+
+#### Commitment discounts
+
+- **CommitmentDiscountId**: Required when commitment discounts apply
+- **CommitmentDiscountType**: Type of commitment (Reserved Instance, Savings Plan, etc.)
+- **CommitmentDiscountStatus**: Usage status (Used, Unused)
+- **CommitmentDiscountQuantity**: Quantity of commitment used
+
+#### Usage tracking
+
+- **ConsumedQuantity**: Actual quantity consumed
+- **ConsumedUnit**: Unit of consumption measurement
+
+### Recommended fields
+
+These fields should be included when available:
+
+- **ServiceSubcategory**: More specific service classification
+- **ChargeFrequency**: How often the charge occurs (One-Time, Recurring, Usage-Based)
+- **InvoiceId**: Direct link to provider invoice
+- **InvoiceIssuer**: Entity that issued the invoice
+
+### Optional fields
+
+- **Tags**: Key-value pairs for resource tagging
+- **x\_\***: Provider-specific fields (must start with `x_` prefix)
+
+## Service categories
+
+FOCUS 1.2 defines standardized service categories:
+
+| Category                               | Description                                      |
+| -------------------------------------- | ------------------------------------------------ |
+| **AI and Machine Learning**            | Artificial intelligence and ML services          |
+| **Analytics**                          | Data analytics and business intelligence         |
+| **Compute**                            | Virtual machines, containers, and compute services |
+| **Databases**                          | Managed database services                        |
+| **Developer Tools**                    | Development and deployment tools                 |
+| **Management and Governance**          | Monitoring, logging, and governance              |
+| **Networking**                         | Load balancers, CDN, VPN, networking             |
+| **Security, Identity, and Compliance** | Security and identity services                   |
+| **Storage**                            | Object, block, and file storage                  |
+| **Other**                              | Services not fitting other categories            |
+
+## Charge categories
+
+FOCUS defines five types of charges:
+
+| Category       | Description                                   |
+| -------------- | --------------------------------------------- |
+| **Usage**      | Charges based on actual resource consumption  |
+| **Purchase**   | Upfront payments for commitments or licenses  |
+| **Tax**        | Taxes, VAT, and other government-imposed fees |
+| **Credit**     | Promotional credits, refunds, and adjustments |
+| **Adjustment** | Billing corrections and manual adjustments    |
+
+## Data types
+
+FOCUS specifies data types for each field:
+
+- **Decimal**: All cost and quantity fields for precise financial calculations
+- **String**: Text fields like names, IDs, and descriptions
+- **DateTime**: Time periods in ISO 8601 format
+- **Dict/JSON**: Complex data like tags and provider-specific information
+
+For the latest FOCUS specification details, visit [focus.finops.org](https://focus.finops.org/).

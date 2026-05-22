@@ -1,25 +1,25 @@
 ---
-title: "Sync Providers"
+title: 'Sync provider billing data'
 order: 3
+description: "Trigger manual syncs, monitor scheduled imports, and troubleshoot failures when ingesting cloud and AI provider billing data into Narev Self-Hosted."
 ---
-
-# Sync Providers
 
 After connecting your billing data providers, you need to manually sync their data into NarevAI for analysis. This guide explains how to trigger and manage your billing data synchronization.
 
-## How Data Sync Works
+## How data sync works
 
 NarevAI uses **manual synchronization** - you trigger data imports when needed rather than on a schedule. This gives you full control over when and what data to import.
 
-### Sync Process:
-1. **Connect Provider** - Link your cloud account ([see provider guides](../connect-providers/))
-2. **Trigger Sync** - Manually start data import  
+### Sync process
+
+1. **Connect Provider** - Link your cloud account ([see provider guides](/oss/thinops/connect-providers))
+2. **Trigger Sync** - Manually start data import
 3. **Monitor Progress** - Track sync status and results
 4. **Retry if Needed** - Handle any failed synchronizations
 
-## Starting a Data Sync
+## Starting a data sync
 
-### 1. Navigate to Data Sync
+### 1. Navigate to data sync
 
 1. In the NarevAI sidebar, under **Data Connections**, click **Sync**
 2. You'll see the sync management interface with three main sections:
@@ -27,7 +27,7 @@ NarevAI uses **manual synchronization** - you trigger data imports when needed r
    - **Sync History Table**: All previous sync runs
    - **Action Menus**: Details, retry, cancel options per sync
 
-### 2. Trigger New Sync
+### 2. Trigger new sync
 
 1. Click the **Trigger Sync** button
 2. In the sync configuration dialog, set:
@@ -41,25 +41,29 @@ NarevAI uses **manual synchronization** - you trigger data imports when needed r
 
 3. Click **Start Sync** to begin the process
 
-::: tip Sync Duration
-Syncs can take several minutes to hours depending on:
-- Amount of historical data requested
-- Provider data availability and processing speed
-- Number of providers being synced simultaneously
-:::
+<Info>
+**Sync Duration**: Syncs can take several minutes to hours depending on:
 
-## Monitoring Sync Status
+1. Amount of historical data requested
 
-### Sync Run Table Columns:
+2. Provider data availability and processing speed
+
+3. Number of providers being synced simultaneously
+
+</Info>
+
+## Monitoring sync status
+
+### Sync run table columns
 
 - **Run ID**: Unique identifier (first 8 characters shown)
 - **Provider**: Which provider is being synced
 - **Status**: Current sync state with colored badges
 - **Started**: When the sync began (relative time)
-- **Duration**: How long the sync took/is taking
+- **Duration**: How long the sync takes
 - **Records**: Count of processed, created, and updated records
 
-### Status Types:
+### Status types
 
 - **Pending** (gray) - Queued for execution
 - **Running** (blue) - Currently importing data
@@ -67,9 +71,9 @@ Syncs can take several minutes to hours depending on:
 - **Failed** (red) - Encountered errors
 - **Cancelled** (gray) - Manually stopped
 
-## Managing Sync Runs
+## Managing sync runs
 
-### Available Actions:
+### Available actions
 
 For each sync run, you can:
 
@@ -78,36 +82,41 @@ For each sync run, you can:
 - **Retry Sync** - Re-run failed or cancelled syncs
 - **Cancel Sync** - Stop running or pending syncs
 
-### Action Availability:
+### Action availability
+
 - **Retry**: Only available for failed or cancelled runs
 - **Cancel**: Only available for running or pending runs
 - **View Details**: Always available
 
-## Troubleshooting Sync Issues
+## Troubleshooting sync issues
 
-### Common Problems:
+### Common problems
 
 **Sync Fails Immediately**
+
 - Check provider credentials haven't expired
 - Verify network connectivity
 - Ensure provider permissions are still valid
 
 **No Data Found**
+
 - Confirm billing data exists in provider for requested date range
 - Check if exports are properly configured (24-48 hour delay is normal)
 - Verify account access to billing information
 
 **Partial Data Import**
+
 - Review detailed error messages in sync details
 - Try smaller date ranges to isolate issues
 - Check provider-specific limits and quotas
 
 **Sync Takes Too Long**
+
 - Reduce the date range being synced
 - Check provider API rate limits
 - Monitor system resources
 
-### Getting Help:
+### Getting help
 
 1. **View Sync Details** - Click on any sync run for comprehensive information
 2. **Check Health Status** - Use the Health Check button to verify sync service
@@ -123,13 +132,13 @@ Since syncs are manual, consider these guidelines:
 - **Analysis Prep**: Sync before important cost reviews
 - **Issue Investigation**: On-demand syncs when investigating cost spikes
 
-## Next Steps
+## What to do next
 
 After successful data synchronization:
 
-1. **Verify Data** - Check that expected records were imported
-2. **Explore Analytics** - Navigate to cost analysis dashboards  
+1. **Verify data** - Check that expected records imported
+2. **Explore Analytics** - Navigate to cost analysis dashboards
 3. **Set Baselines** - Establish cost benchmarks from imported data
 4. **Plan Regular Syncs** - Decide on your manual sync frequency
 
-Your billing data is now ready for analysis in NarevAI!
+Your billing data is now ready for analysis in NarevAI

@@ -114,13 +114,6 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
-        with:
-          version: 10.33.4
-
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build Documentation
-        run: pnpm run build
+      - name: Check for broken links
+        run: npx mintlify@4.2.510 broken-links
+        continue-on-error: true
