@@ -1,9 +1,9 @@
 # Core framework
-fastapi==0.136.1
-uvicorn[standard]==0.47.0
+fastapi==0.136.3
+uvicorn[standard]==0.48.0
 
 # Database
-sqlalchemy==2.0.49
+sqlalchemy==2.0.50
 
 # Data processing
 pydantic==2.13.4
@@ -15,7 +15,7 @@ openpyxl==3.1.5
 jinja2==3.1.6
 
 # ETL Pipeline - bez wersji
-dlt[sqlalchemy,postgres,filesystem,az]==1.27.0
+dlt[sqlalchemy,postgres,filesystem,az]==1.27.1
 s3fs<2026.0.0
 sf-hamilton[visualization]>=1.88.0
 
